@@ -15,9 +15,9 @@
     <div class="content-wrapper">
         <div class="content-wrapper__inner">
             {{ content }}
+            {% include scripts.html %}
             {% include footer.html %}
         </div>
-    {% include scripts.html %}
     </div>
     
     {% include external.html %}
