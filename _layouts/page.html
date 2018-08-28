@@ -14,3 +14,7 @@ layout: default
     {{ content }}
   </section>
 </article>
+
+{% if {{ page.comments }} %}
+{% include comments.html %}
+{% end if %}
