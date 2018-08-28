@@ -1,8 +1,9 @@
 # Basic
-title: Vno Jekyll
-subtitle: A blog-orientation theme for Jekyll
-welcome_message: <a href="https://github.com/onevcat/vno-jekyll" target="_blank">Download the theme</a>
-description: Vno Jekyll is a port of my Ghost theme vno.
+title: Shun Zhang
+who: Shun Zhang
+subtitle: Senior @ Fudan University
+welcome_message: <a href="#" target="_blank">Leave a message</a>
+description: Welcome to my personal site. Feel free to look around.
 creator: <a href="http://onev.cat">@onevcat</a>
 
 url: "http://vno.onevcat.com"
@@ -13,7 +14,7 @@ permalink: /:year/:month/:title/
 highlighter: rouge
 
 # supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
-cover_color: red
+cover_color: blue
 
 # The blog button should not be removed.
 blog_button:
@@ -37,11 +38,12 @@ comment:
     
 # Social
 social:
-    weibo: onevcat
-    github: onevcat
-    twitter: onevcat
-    gplus: 107108267983477358170
-    mail: onev@onevcat.com
+    # weibo: onevcat
+    linkedin: shun-zhang-08868a158
+    github: zhangshun97
+    twitter: ShunZhang6
+    # gplus: 107108267983477358170
+    mail: shunzhang97@gmail.com
 
 # Google Analytics
 ga:

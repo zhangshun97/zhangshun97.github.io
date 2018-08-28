@@ -2,6 +2,8 @@
 
 [Vno Jekyll](https://github.com/onevcat/vno-jekyll) is a theme for [Jekyll](http://jekyllrb.com). It is a port of my Ghost theme [vno](https://github.com/onevcat/vno), which is originally developed from [Dale Anthony's Uno](https://github.com/daleanthony/uno).
 
+This repo is 'forked' from [Vno - Jekyll](https://github.com/onevcat/vno-jekyll). Something went wrong when I forked it directly, so I created this new one and push all the stuff.
+
 ## Live Demo
 
 See [Vno - Jekyll](http://vno.onevcat.com) site and [my blog](http://onevcat.com).
