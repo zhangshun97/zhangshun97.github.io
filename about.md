@@ -1,7 +1,6 @@
 ---
 layout: page
 title: About Me
-tags: about
 ---
 
 ### Brief Intro
