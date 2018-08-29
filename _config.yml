@@ -3,7 +3,8 @@ title: Shun Zhang
 who: Shun Zhang
 subtitle: Senior @ Fudan University
 welcome_message: <a href="/message" target="_self"><u>Leave a message</u></a>
-description: Welcome to my personal site. Feel free to look around.
+welcome_description: 留言板
+description: Welcome to my personal site.</br>欢迎来到我的个人博客</br>Feel free to look around. 
 creator: <a href="http://onev.cat">@onevcat</a>
 
 url: "http://vno.onevcat.com"
@@ -19,13 +20,13 @@ cover_color: blue
 # The blog button should not be removed.
 blog_button:
     title: Blog
-    description: Visit blog
+    description: 博客主页
 
 # Navigation buttons in the front page.
 nav:
-    - {title: About Me, description: Brief Introduction, url: '/about'}
-    - {title: Projects, description: My Projects, url: '/projects'}
-    - {title: Resume, description: My Resume, url: '/resume'}
+    - {title: About Me, description: 关于我, url: '/about'}
+    - {title: Projects, description: 我的项目, url: '/projects'}
+    - {title: Resume, description: 我的简历, url: '/resume'}
     # - {title: Another Button, description: A button, url: 'http://example.com'}
 
 # Pagination
@@ -44,6 +45,7 @@ social:
     linkedin: shun-zhang-08868a158
     github: zhangshun97
     twitter: ShunZhang6
+    facebook: shun.zhang.96995
     # gplus: 107108267983477358170
     mail: shunzhang97@gmail.com
 

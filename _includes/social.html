@@ -14,7 +14,7 @@
   {% if site.social.linkedin %}
   <!-- Weibo -->
   <li class="navigation__item">
-    <a href="https://www.linkedin.com/in/{{site.social.linkedin}}" title="@{{site.who}} 的领英" target="_blank">
+    <a href="https://www.linkedin.com/in/{{site.social.linkedin}}" title="前往 {{site.who}} 的 LinkedIn 主页" target="_blank">
       <i class='social fa fa-linkedin'></i>
       <span class="label">LinkedIn</span>
     </a>
@@ -24,7 +24,7 @@
   {% if site.social.github %}
   <!-- Github -->
   <li class="navigation__item">
-    <a href="https://github.com/{{site.social.github}}" title="@{{site.social.github}} 的 Github" target="_blank">
+    <a href="https://github.com/{{site.social.github}}" title="前往 {{site.who}} 的 GitHub 主页" target="_blank">
       <i class='social fa fa-github'></i>
       <span class="label">Github</span>
     </a>
@@ -34,9 +34,19 @@
   {% if site.social.twitter %}
   <!-- Twitter -->
   <li class="navigation__item">
-    <a href="http://twitter.com/{{site.social.twitter}}" title="@{{site.social.twitter}}" target="_blank">
+    <a href="http://twitter.com/{{site.social.twitter}}" title="前往 {{site.who}} 的 Twitter 主页" target="_blank">
       <i class='social fa fa-twitter'></i>
       <span class="label">Twitter</span>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if site.social.facebook %}
+  <!-- Twitter -->
+  <li class="navigation__item">
+    <a href="https://www.facebook.com/{{site.social.facebook}}" title="前往 {{site.who}} 的 Facebook 主页" target="_blank">
+      <i class='social fa fa-facebook'></i>
+      <span class="label">Facebook</span>
     </a>
   </li>
   {% endif %}
@@ -64,7 +74,7 @@
   {% if site.social.mail %}
   <!-- Email -->
   <li class="navigation__item">
-    <a href="mailto:{{site.social.mail}}" title="Contact me">
+    <a href="mailto:{{site.social.mail}}" title="Email me">
       <i class='social fa fa-envelope'></i>
       <span class="label">Email</span>
     </a>
