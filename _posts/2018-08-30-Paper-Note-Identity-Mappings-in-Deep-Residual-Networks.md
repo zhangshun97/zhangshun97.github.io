@@ -4,7 +4,6 @@ title: 论文笔记| Identity Mappings in Deep Residual Networks
 tags: identity-mappings deep-residual-network
 ---
 
-*Shun Zhang*
 [Original Paper](https://link.springer.com/chapter/10.1007/978-3-319-46493-0_38)
 
 ## 1. 论文概述
