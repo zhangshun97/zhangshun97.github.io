@@ -26,7 +26,7 @@ blog_button:
 nav:
     - {title: About Me, description: 关于我, url: '/about'}
     - {title: Projects, description: 我的项目, url: '/projects'}
-    - {title: Resume, description: 我的简历, url: '/resume'}
+    # - {title: Resume, description: 我的简历, url: '/resume'}
     # - {title: Another Button, description: A button, url: 'http://example.com'}
 
 # Pagination
