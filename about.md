@@ -26,4 +26,4 @@ B.S. in Applied Mathematics, <a href="http://www.fudan.edu.cn/en/">Fudan Univers
 
 再后来在看 [optimizing gradient descent](http://ruder.io/optimizing-gradient-descent/) 一文时注意到了 Sebastian 的[博客](http://ruder.io/#)，觉得非常的美观，但是仔细一瞧，那是基于 Ghost 平台的 Uno 主题，是闭源收费的，遂又弃之。
 
-其实过程中也弄了一些不错的个人网页模板，但大多都是以介绍自己为主，其博客板块不利于阅读。直到最后在逛 Jekyll Sites 的时候，看到了一个和 Uno 特别像的网站——[robotkang](http://robotkang.cc/)。追根朔源找到了他的原型——[Vno - Jekyll](https://github.com/onevcat/vno-jekyll)，也就是本站的主题。真挺不错的。
+其实过程中也弄了一些不错的个人网页模板，但大多都是以介绍自己为主，其博客板块不利于阅读。直到最后在逛 Jekyll Sites 的时候，看到了一个和 Uno 特别像的网站——[robotkang](http://robotkang.cc/)。追根朔源找到了他的原型——[Vno - Jekyll](https://github.com/onevcat/vno-jekyll)，也就是本站的主题。
