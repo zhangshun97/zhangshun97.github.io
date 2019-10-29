@@ -1,6 +1,6 @@
 ---
-layout: post
-title: 15618 Project Proposal: Lock-Free Red Black Tree
+layout: default_site
+title: 15618 Project Proposal
 tags: cmu-course project parallel
 ---
 
@@ -55,7 +55,7 @@ We choose shared address space because...
 | 12/02 - 12/08 | finish final report, clean up codes                          |        |
 | Extra plan    | implement lock-based red-black tree                          |        |
 
-###  
+
 
 
 
