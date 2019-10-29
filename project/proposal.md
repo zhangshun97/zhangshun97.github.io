@@ -1,14 +1,13 @@
 ---
 layout: default_site
 title: 15618 Project Proposal
-tags: cmu-course project parallel
 ---
 
 ## Lock-Free Red-Black Tree Using CAS
 
-Our team: Shun Zhang, Guangcheng Li
+Our team: Shun Zhang, Guancheng Li
 
-Project URL: 
+Project URL: https://zhangshun97.github.io/project/proposal/
 
 ---
 
