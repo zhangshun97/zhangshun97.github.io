@@ -7,7 +7,7 @@ title: 15618 Project Proposal
 
 Our team: Shun Zhang, Guancheng Li
 
-Project URL: https://zhangshun97.github.io/project/proposal/
+Project checkpoint URL: https://zhangshun97.github.io/project/checkpoint/
 
 ---
 
