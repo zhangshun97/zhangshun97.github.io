@@ -7,7 +7,7 @@ title: 15618 Project Proposal
 
 Our team: Shun Zhang, Guancheng Li
 
-[Project checkpoint report](https://zhangshun97.github.io/project/checkpoint/)
+Check this: [Project checkpoint report](https://zhangshun97.github.io/project/checkpoint/)
 
 ---
 
