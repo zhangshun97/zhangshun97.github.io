@@ -9,7 +9,7 @@ Our team: Shun Zhang, Guancheng Li
 
 Checkpoint: [Project checkpoint report](https://zhangshun97.github.io/project/checkpoint/)
 
-Final report: [Lock-free Red-black Tree Implementation with CAS](https://zhangshun97.github.io/project/proposal/assets/15618_final_report.pdf)
+Final report: [Lock-free Red-black Tree Implementation with CAS](https://zhangshun97.github.io/project/assets/15618_final_report.pdf)
 
 ---
 

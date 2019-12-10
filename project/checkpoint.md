@@ -9,7 +9,7 @@ Our team: Shun Zhang, Guancheng Li
 
 [Project proposal](https://zhangshun97.github.io/project/proposal/)
 
-[Final report](https://zhangshun97.github.io/project/proposal/assets/15618_final_report.pdf)
+[Final report](https://zhangshun97.github.io/project/assets/15618_final_report.pdf)
 
 ---
 
