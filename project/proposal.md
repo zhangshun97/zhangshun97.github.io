@@ -7,7 +7,9 @@ title: 15618 Project Proposal
 
 Our team: Shun Zhang, Guancheng Li
 
-Check this: [Project checkpoint report](https://zhangshun97.github.io/project/checkpoint/)
+Checkpoint: [Project checkpoint report](https://zhangshun97.github.io/project/checkpoint/)
+
+Final report: [Lock-free Red-black Tree Implementation with CAS](https://zhangshun97.github.io/project/proposal/assets/15618_final_report.pdf)
 
 ---
 
@@ -61,17 +63,10 @@ We choose shared address space model because tree structure is easier to manipul
 | Week          | Plan to do                                                   | Status      |
 | ------------- | ------------------------------------------------------------ | ----------- |
 | 10/28 - 11/03 | project proposal, read paper, start to implement sequential red-black tree | Done        |
-| 11/04 - 11/10 | about to finish sequential version and lock-based version    | Almost done |
-| 11/11 - 11/17 | hopefully finish lock-free version                           | Doing       |
-| 11/18 - 11/24 | time for debugging and extra plan                            |             |
-| 11/25 - 12/01 | start writing report, do full experiments                    |             |
-| 12/02 - 12/08 | finish final report, clean up codes                          |             |
-| Extra plan    | implement fine-grained lock-based red-black tree             |             |
-
-###  
-
-
-
-
-
+| 11/04 - 11/10 | about to finish sequential version and lock-based version    | Done        |
+| 11/11 - 11/17 | hopefully finish lock-free version                           | Done        |
+| 11/18 - 11/24 | time for debugging and extra plan                            | Done        |
+| 11/25 - 12/01 | start writing report, do full experiments                    | Done        |
+| 12/02 - 12/08 | finish final report, clean up codes                          | Done        |
+| Extra plan    | implement fine-grained lock-based red-black tree             | Done insert |
 
