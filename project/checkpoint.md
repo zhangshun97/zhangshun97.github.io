@@ -11,6 +11,8 @@ Our team: Shun Zhang, Guancheng Li
 
 [Final report](https://zhangshun97.github.io/project/assets/15618_final_report.pdf)
 
+[GitHub repository](https://github.com/zhangshun97/15618_final)
+
 ---
 
 ### Detailed schedule

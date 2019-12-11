@@ -11,6 +11,8 @@ Checkpoint: [Project checkpoint report](https://zhangshun97.github.io/project/ch
 
 Final report: [Lock-free Red-black Tree Implementation with CAS](https://zhangshun97.github.io/project/assets/15618_final_report.pdf)
 
+Source code: [GitHub repository](https://github.com/zhangshun97/15618_final)
+
 ---
 
 ### Summary
