@@ -1,0 +1,805 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="学习心得 - TCP协议, Never2Late">
+    <meta name="description" content="Shun的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>学习心得 - TCP协议 | Never2Late</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Never2Late</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Never2Late</div>
+        <div class="logo-desc">
+            
+            Shun的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">学习心得 - TCP协议</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/TCP%E5%8D%8F%E8%AE%AE/">
+                                <span class="chip bg-color">TCP协议</span>
+                            </a>
+                        
+                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                <span class="chip bg-color">计算机网络</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="post-category">
+                                学习心得
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-12-26
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    8 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="0-写在前面"><a href="#0-写在前面" class="headerlink" title="0. 写在前面"></a>0. 写在前面</h2><p>这学期上的唯二两门CS课之一就是<a href="https://computer-networks.github.io/fa19/index.html" target="_blank" rel="noopener">15641 Computer Network</a>，在这之前对于网络的全部理解大概就是“重启路由器”了。在上课之前我一直认为网络这个东西相对独立，即大多数的工作都不需要计算机网络的相关知识。但是上完课之后我觉得这样的认识是肤浅的，网络中的很多概念和想法其实是很通用的，例如一个CDN就可以看成是一个巨大的NUMA machine；一个LAN也可以看成是一个放大版的CPU多核通信。</p>
+<h2 id="1-TCP概述"><a href="#1-TCP概述" class="headerlink" title="1. TCP概述"></a>1. TCP概述</h2><p>首先TCP，即<em>Transmission Control Protocol</em>，传输控制协议。顾名思义，它的主要任务就是进行数据的<strong>传输</strong>，<strong>控制</strong>也是为了<strong>更好</strong>的实现这个传输任务。</p>
+<p>以上加粗的三个词即构成了整个TCP的核心。即以什么形式传输？如何开始or结束传输？为什么需要控制？需要什么样的控制？什么叫做“更好”？</p>
+<h2 id="2-传输"><a href="#2-传输" class="headerlink" title="2. 传输"></a>2. 传输</h2><h3 id="2-1-以什么形式传输？"><a href="#2-1-以什么形式传输？" class="headerlink" title="2.1 以什么形式传输？"></a>2.1 以什么形式传输？</h3><p><strong>Packet</strong>，即（数据）包。相信大家如果接触过网络相关的知识对这个词一定不陌生，通常所说的抓包、丢包的“包”指的就是这个Packet。直接讲这个packet可能会有些突兀，首先要问的问题是，为什么要用这个packet？有没有一些别的方式？</p>
+<p>这里要稍微提一些历史，在网络发明以前，能够做到大范围通信的是什么？</p>
+<p>——有线电话。</p>
+<p>在一些怀旧影片中大家或许会注意到有这样一个职位：接线员（如下图）。以前打电话的时候通常都是先打到一个专接中心，在你告知接线员需要转接哪里后他就会帮你进行人为的接线操作。</p>
+<p><img src="/images/image-20191226155656485.png" alt="有线电话的接线机制"></p>
+<p>这当然是网络传输方式的一种选择，只是这种选择的弊端太明显，即成本高、不能规模化。考虑到如今网络的两大特点，用户群庞大以及流量分散，这种方式是注定不可行的。当然它也有它的好处，即带宽是稳定的。</p>
+<p>至此，大家就把目光投向了另一种大范围通信的系统——邮件系统。它的弊端是慢，以前靠人力、畜力，现在靠内燃机，还是慢。但是在互联网的设计中，这种弊端是全然不存在的，模拟信号在电缆中的传输速度接近光速。</p>
+<p>由此互联网便建立起了类似于邮件系统的数据传输模式——数据包收发（Packet switching）。它可以复用线路、分布式部署并且不需要人力进行管控，一旦部署完成即可自动收发数据包。其中最重要的一个特性就是对线路的复用（statistical multiplexing），这直接降低了分摊到每个用户的成本，同时提高了线路的效用。</p>
+<p>注：关于数据包的基本信息以及如何进行收发等可见IP相关知识。通常所说的数据包即指的是IP层可见的部分。</p>
+<h3 id="2-2-如何开始传输"><a href="#2-2-如何开始传输" class="headerlink" title="2.2 如何开始传输"></a>2.2 如何开始传输</h3><p>IP层的主要目的以及用途即尽可能的将数据包从A发送到B，而且对于每个数据包都是独立的，即IP层不会管数据包的内容尤其是先后顺序，而数据的有序性是两个客户端进行通信的很重要的一方面，这也正是TCP的主要特点之一（UDP则不保证有序性）。</p>
+<h4 id="2-2-1-为什么不直接传输数据"><a href="#2-2-1-为什么不直接传输数据" class="headerlink" title="2.2.1 为什么不直接传输数据"></a>2.2.1 为什么不直接传输数据</h4><p>所谓通信，即两个客户端开始互相有目的性得传输特定的数据。那么第一步，如何开始这个通信？通常这两个客户端中有一个为发起者（initiator），本次通信的第一个包即由他来发起。需要注意的是，这第一个包并不是真正的数据包，他更像是一个用来打招呼的包，我们称之为SYN（即指代Synchronize，同步），为什么需要有一个打招呼的包？最主要的原因是通信双方需要互相交换（同步）各自的数据序号（sequence number）。数据序号，顾名思义就是对每一个自己发出的数据（以字节为单位）编号。这个序号正是TCP用以保证数据的有序性的关键。</p>
+<p>注：为什么需要双方互相同步呢？在这里完全取决于应用层（Application layer）的选择，如果是类似HTTP的应用，则显然双方都有可能发送数据，但如果是明确只需要一方发送数据的，则改用UDP即可。</p>
+<h4 id="2-2-2-如何打招呼——三次握手"><a href="#2-2-2-如何打招呼——三次握手" class="headerlink" title="2.2.2 如何打招呼——三次握手"></a>2.2.2 如何打招呼——三次握手</h4><p>“三次握手”这个词似乎已经烂大街了，为什么是三次呢？我们先来讲，什么是一个完整的“招呼”。前面说到的，在这个过程中，双方需要互相交换（同步）各自的（初始）数据序号。最直接的想法就是：</p>
+<ol>
+<li><p>A发送自己的初始序号给B</p>
+</li>
+<li><p>B做出回应表示收到</p>
+</li>
+<li><p>B发送自己的初始序号给</p>
+</li>
+<li><p>A做出回应表示收到</p>
+</li>
+</ol>
+<p>这样是四次握手（一次握手可以理解为一个数据包），了解数据包的结构就不难发现，以上四个数据包中，2和3是可以合并的。于是就简化为了熟知的三次握手。在结束通信阶段，也有对应的握手，三次和四次均可（因为通信开始可以认为是一起开始的，但是结束则不一定）。</p>
+<h2 id="3-控制"><a href="#3-控制" class="headerlink" title="3. 控制"></a>3. 控制</h2><h3 id="3-1-为什么需要控制"><a href="#3-1-为什么需要控制" class="headerlink" title="3.1 为什么需要控制"></a>3.1 为什么需要控制</h3><p>在这里我们主要是站在数据发送方的视角考虑，当你在发送数据时，自然是希望越快越好，但是有以下两方面的考虑</p>
+<ol>
+<li>接收方的存储空间是有限的，特别的，为某一次传输准备的缓存空间更是有限的</li>
+<li>网络传输是受带宽限制的，特别的，路由器的缓存队列也是有限的</li>
+</ol>
+<p>考虑到第一点，如果你的发送速率过快，则会快速占满接收方的缓存空间，在之后你发送的包都会被丢弃，这显然是不可取的。</p>
+<p>考虑到第二点，如果你的发送速率过快，则会快速占满路由器的缓存队列（这里的路由器可以是你的包所经过的任意一个，这里可以仅关注离接收方最近的那个路由器），与此同时，其他的数据发送方发出的包就会被丢弃，这对于其他的接收/发送方是不公平的，并且如果大家都这样做，那就形成了恶性循环，也显然是不可取的。</p>
+<h3 id="3-2-需要什么样的控制"><a href="#3-2-需要什么样的控制" class="headerlink" title="3.2 需要什么样的控制"></a>3.2 需要什么样的控制</h3><ol>
+<li>针对上述的第一个考虑，TCP里面就引入了流量控制（flow control）的概念。具体的实现方式是让接收方在每次发送的ACK数据包内包含接收方剩余buffer大小的信息，这个数据包含在TCP头信息内。这样，发送方就可以根据这个信息，对自身的滑动窗口大小做一个上限的限制。</li>
+<li>针对上述第二个考虑，TCP引入了拥塞控制（congestion control）的概念。具体的实现方式是根据收到的ACK数据包来进行对滑动窗口大小的动态调整。这里的具体实现方式有多种，例如经典的Reno，Cubic以及谷歌推出的BBR。</li>
+</ol>
+<h3 id="4-TCP的状态机"><a href="#4-TCP的状态机" class="headerlink" title="4. TCP的状态机"></a>4. TCP的状态机</h3><p><img src="/images/image-20200629215506560.png" alt="TCP状态转移图"></p>
+<p><a href="https://book.systemsapproach.org/index.html#" target="_blank" rel="noopener">Computer Networks: A Systems Approach</a> 中的这张状态转移图是十分明了直观的。其中值得关注的一点是在结束阶段，先结束（先发FIN）的一方需要在对另一方的FIN作出ACK后等待一段时间（<code>TIME_WAIT</code>状态）。之所以这样做是因为，作为先结束的一方，最后收到另一方的FIN并作出ACK后，无法保证该ACK包被另一方顺利收到（例如丢包等）。而如果此时默认对方收到并结束连接的话，很有可能会在之后收到另一方重发的FIN包。这个FIN包可能会导致之后的由同一个端口开启的TCP连接提前结束。</p>
+<p>如果没有等待时间，一个可能的事件流如下</p>
+<ol>
+<li>A向B发送FIN</li>
+<li>B回复ACK到A</li>
+<li>A收到B的FIN</li>
+<li>A回复ACK给B，并直接变成结束状态</li>
+<li>B在timeout之后重发FIN</li>
+<li>B收到了之前A回复的ACK包，B变成结束状态</li>
+<li>B又在同一个端口与A建立了连接，经过握手阶段双方进入<code>Established</code>状态</li>
+<li>A收到之前一次B重发的FIN包，A回复ACK后进入<code>CLOSE_WAIT</code>状态</li>
+<li>在此次连接中A并无数据发送，发送FIN并进入<code>LAST_ACK</code>状态</li>
+<li>B对A的FIN回复ACK，A收到后就进入了<code>CLOSED</code>状态</li>
+</ol>
+<p>这样就因为没有预留等待时间而导致下次一的连接提前结束。这也正是IP层的魔力所在，即不确定性。数据包到达顺序不确定，到达时间不确定。因此，所有建立在IP层之上的协议都需要充分考虑到这一点，并根据自身需求作出相应的机制来避免与预期不相符的表现。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] 课程 <a href="https://computer-networks.github.io/fa19/index.html" target="_blank" rel="noopener">CMU 15-641 lecture</a></p>
+<p>[2] 书本 <a href="https://book.systemsapproach.org/index.html#" target="_blank" rel="noopener">Computer Networks: A Systems Approach</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Shun Zhang</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://zhangshun97.github.io/2019/12/26/2019-12-26-tcp/">http://zhangshun97.github.io/2019/12/26/2019-12-26-tcp/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Shun Zhang</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/TCP%E5%8D%8F%E8%AE%AE/">
+                                    <span class="chip bg-color">TCP协议</span>
+                                </a>
+                            
+                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                    <span class="chip bg-color">计算机网络</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'http://zhangshun97.github.io/2019/12/26/2019-12-26-tcp/';
+        this.page.identifier = '/2019/12/26/2019-12-26-tcp/';
+        this.page.title = '学习心得 - TCP协议';
+    };
+    let disqus_shortname = 'shun-blog';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/06/27/2020-06-27-b-tree/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="学习笔记 - 自底向上理解 B树/B+树">
+                        
+                        <span class="card-title">学习笔记 - 自底向上理解 B树/B+树</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要从机械硬盘的基本访问模式来介绍B树是如何被引入的。包括B树的前身多路查找树以及B树的后继B+树。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/B%E6%A0%91-B-%E6%A0%91/">
+                        <span class="chip bg-color">B树/B+树</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                        <span class="chip bg-color">数据库</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/08/30/2018-08-30-paper-note-identity-mappings-in-deep-residual-networks/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="论文笔记 - Identity Mappings in Deep Residual Networks">
+                        
+                        <span class="card-title">论文笔记 - Identity Mappings in Deep Residual Networks</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文是对于残差网络中单位连接的原论文的一份学习笔记。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-08-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">神经网络</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">残差网络</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('40')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: Never2Late<br />'
+            + '文章作者: Shun Zhang<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Shun Zhang</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/zhangshun97" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:shunzhang97@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

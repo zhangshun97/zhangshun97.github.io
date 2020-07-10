@@ -1,0 +1,909 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="学习笔记 - Google分布式文件系统, Never2Late">
+    <meta name="description" content="Shun的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>学习笔记 - Google分布式文件系统 | Never2Late</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Never2Late</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Never2Late</div>
+        <div class="logo-desc">
+            
+            Shun的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">学习笔记 - Google分布式文件系统</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">
+                                <span class="chip bg-color">分布式系统</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                                <span class="chip bg-color">文件系统</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                学习笔记
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-07-01
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    12 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>主要参考：CMU <a href="http://www.andrew.cmu.edu/course/15-440/" target="_blank" rel="noopener">15-640</a>，以及<a href="https://dl.acm.org/doi/pdf/10.1145/945445.945450" target="_blank" rel="noopener">原论文</a></p>
+<h3 id="1-GFS的硬件基础"><a href="#1-GFS的硬件基础" class="headerlink" title="1. GFS的硬件基础"></a>1. GFS的硬件基础</h3><ul>
+<li>大型数据中心，大量的服务器和硬盘以rack为单位，rack之间主要以树型拓扑连接</li>
+<li>主要特点<ul>
+<li>同一rack之间的服务器交流带宽高、延迟低、拥塞情况良好</li>
+<li>不同rack之间的服务器交流的有效带宽有限、延迟稍高、拥塞情况随着层级地上升而加重</li>
+<li>由于一个数据中心内含有的服务器和硬盘数量巨大（数以千计的服务器、数以百万计的硬盘），硬件错误、崩溃是常有的事情</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-GFS的使用场景假设"><a href="#2-GFS的使用场景假设" class="headerlink" title="2. GFS的使用场景假设"></a>2. GFS的使用场景假设</h3><ul>
+<li>存储大文件（&gt;=100MB），小文件也支持，但是不会做优化</li>
+<li>两种读操作<ul>
+<li>较大的顺序读取，例如一次读1MB</li>
+<li>较小的随机读取，例如一次读1KB，同样不会做优化</li>
+</ul>
+</li>
+<li>两种写操作<ul>
+<li>较大的顺序写操作，并且多以record append（找不到合适的中文翻译，下文简称append）为主</li>
+<li>较小的随机写操作，同样不会做优化</li>
+</ul>
+</li>
+<li>并发写操作也主要以record append操作为主，这也是整个系统的主要优化方向</li>
+</ul>
+<p>注：在后面我们会看到record append操作所具有的并发优势。</p>
+<h3 id="3-GFS的设计目标"><a href="#3-GFS的设计目标" class="headerlink" title="3. GFS的设计目标"></a>3. GFS的设计目标</h3><ol>
+<li>保持数据和整体系统的高可用性</li>
+<li>容错机制能够对用户透明</li>
+<li>为了实现系统各部件的同步所需要的overhead尽量小</li>
+<li>高效利用庞大的服务器和硬盘资源</li>
+<li>相比于低延迟，更倾向于维持高吞吐水平</li>
+</ol>
+<h3 id="4-GFS的基本框架和主要部件"><a href="#4-GFS的基本框架和主要部件" class="headerlink" title="4. GFS的基本框架和主要部件"></a>4. GFS的基本框架和主要部件</h3><p>一个集群（cluster）内包含</p>
+<ul>
+<li>一个主服务器（master server）</li>
+<li>很多分块服务器（chunk server）</li>
+</ul>
+<p><img src="/images/image-20200628211731740.png" alt="GFS整体框架图"></p>
+<p>从上图中我们可以得到以下信息</p>
+<ul>
+<li>主服务器存储整个文件系统的名称空间以及每一个文件的分块信息</li>
+<li>分块服务器是实际存放文件（以块为单位）的机器</li>
+<li>客户应用会从主服务器获取有关目标文件的分块信息</li>
+<li>在获取分块信息后，客户应用会直接向分块服务器发起数据请求（这一过程与HTTP重定向类似）</li>
+</ul>
+<h4 id="4-1-主服务器"><a href="#4-1-主服务器" class="headerlink" title="4.1 主服务器"></a>4.1 主服务器</h4><ol>
+<li><p>主服务器负责管理该文件系统中的所有文件的元信息（metadata），这些元信息包括</p>
+<ul>
+<li><p>名称空间（namespace），即文件路径</p>
+</li>
+<li><p>访问控制信息，即文件权限</p>
+</li>
+<li><p>文件分块信息，包括块编号和块句柄（chunk handle）</p>
+</li>
+<li><p>实际存储分块数据的分块服务器信息（包括主分块服务器和所有副分块服务器）</p>
+</li>
+</ul>
+</li>
+<li><p>主服务器负责分块数据的迁移</p>
+</li>
+</ol>
+<ul>
+<li>为什么需要进行迁移？</li>
+</ul>
+<ol start="3">
+<li>主服务器负责保持整个文件系统的一致性管理</li>
+<li>主服务器负责垃圾回收所有孤儿分块数据</li>
+</ol>
+<h4 id="4-2-分块服务器"><a href="#4-2-分块服务器" class="headerlink" title="4.2 分块服务器"></a>4.2 分块服务器</h4><ol>
+<li>分块服务器负责实际存储文件块，以及文件块对应的版本编号和校验和</li>
+<li>分块服务器职能单一，只需要对客户应用请求所处回应以及定期向主服务器汇报（heartbeat）</li>
+<li>客户应用发出的请求包含对应文件块的块句柄和所请求的数据范围（byte range）</li>
+<li>分块服务器中的每一个文件块都会存在三个备份（默认值），三个会在不同的分块服务器上，通常其中的两个分块服务器会处在同一个rack中，另一个会处在不同的rack中。这样做是既考虑到了分块服务器间通信效率，又考虑到了容灾性能</li>
+<li>分块服务器侧不会缓存数据（除了Linux系统自带的文件缓存机制），同样，客户应用侧也不会缓存数据，客户应用侧只会缓存文件元信息</li>
+</ol>
+<h4 id="4-3-客户应用"><a href="#4-3-客户应用" class="headerlink" title="4.3 客户应用"></a>4.3 客户应用</h4><ol>
+<li><p>客户应用会首先向主服务器发送元信息请求</p>
+</li>
+<li><p>在拿到元信息后，客户应用会向所有分块服务器中的某一个发送数据块请求。通常是选择“最近”的一个分块服务器，这里的“最近”是在IP层的意义下的最近</p>
+</li>
+<li><p>客户应用侧不缓存文件数据，只缓存文件元信息。从使用场景假设可以看出顺序读取和append操作并不会得益于客户应用侧的缓存机制，并且除去缓存以后也不用担心缓存一致性的问题</p>
+</li>
+<li><p>不支持所有的POSIX文件系统接口，支持大多数文件操作，包括创建、删除、打开、关闭、读取和写入</p>
+</li>
+<li><p>支持两个特殊的操作</p>
+<ol>
+<li>append，这个操作的好处是不需要进行显示的并发同步即可保证并发的append操作不会相互影响</li>
+<li>snapshot，这个操作能够很高效地复制一个文件或一个目录结构（即目录下的所有文件）</li>
+</ol>
+<p>关于这两个操作的细节将在后问阐述。</p>
+</li>
+</ol>
+<h3 id="5-GFS的读与写操作"><a href="#5-GFS的读与写操作" class="headerlink" title="5. GFS的读与写操作"></a>5. GFS的读与写操作</h3><h4 id="5-1-GFS的读操作流程"><a href="#5-1-GFS的读操作流程" class="headerlink" title="5.1 GFS的读操作流程"></a>5.1 GFS的读操作流程</h4><p><img src="/images/image-20200628211850013.png" alt="GFS读操作的流程"></p>
+<p>读操作相对比较直观，将之前的框架图稍加标记即可得到一个完整的读操作的执行流程</p>
+<ol start="0">
+<li><p>客户应用运用已知的固定分块大小，即64MB，以及客户所请求的文件偏移量，即可算出该偏移量所在分块的编号</p>
+</li>
+<li><p>客户应用将这个分块编号以及文件名发送到主服务器，请求对应的文件元信息</p>
+</li>
+<li><p>主服务器将对应的文件元信息返回给客户应用，其中包括文件块的句柄以及实际存储的分块服务器信息</p>
+<p>客户应用会将该元信息缓存到本地，缓存所用的键是文件名和分块编号</p>
+</li>
+<li><p>客户应用向“最近”的分块服务器发送数据请求，指明对应的块句柄和数据范围</p>
+</li>
+<li><p>分块服务器返回相应的文件块</p>
+</li>
+</ol>
+<p>注：</p>
+<ul>
+<li><p>在实际实现中，主服务器会多回复一些紧跟在请求文件块之后的文件块元信息，类似于prefetch的思想</p>
+</li>
+<li><p>云信息的缓存拥有给定的生存时间（Time To Live）；亦或者文件在客户应用侧被关闭后再次打开时，元信息缓存也会失效</p>
+</li>
+</ul>
+<h4 id="5-2-GFS的写操作流程"><a href="#5-2-GFS的写操作流程" class="headerlink" title="5.2 GFS的写操作流程"></a>5.2 GFS的写操作流程</h4><p>前面提到GFS默认会为每一个文件块保持三个备份，那么当这个文件块需要被修改的时候，如何保持这些备份同步得到更新就是需要解决的一个重要问题。</p>
+<h5 id="5-2-1-主要分块服务器"><a href="#5-2-1-主要分块服务器" class="headerlink" title="5.2.1 主要分块服务器"></a>5.2.1 主要分块服务器</h5><p>前面我们提到，GFS默认为每一个文件块提供三个分块服务器予以储存。这三个分块服务器有没有层级关系呢？答案是肯定的。其中一个分块服务器将会作为该文件块的主要分块服务器（primary chunk server），其他的为次要分块服务器（secondary chunk server）。这个主要分块服务器的作用就体现在写操作上，在具体到写操作之前，我们先来看看主要分块服务器是如何确立的。</p>
+<p>在GFS中，（每一个文件块的）主要分块服务器的身份是由主服务器决定的，并且通过lease来管理这个身份。一个lease通常为60s，即这个时间可以大致理解为各个分块服务器向主服务器汇报自身状态的时间间隔。之所以通过lease来管理，就是为了应对这样一种情况——某个主要分块服务器挂了，那么在lease到期后，主服务器没有收到该主要分块服务器的汇报，那么此时主服务器就可以默认该分块服务器已经不能正常工作了，接下来就会重新从次要分块服务器中选择一个来作为新任的主要分块服务器。</p>
+<h5 id="5-2-2-控制流与数据流"><a href="#5-2-2-控制流与数据流" class="headerlink" title="5.2.2 控制流与数据流"></a>5.2.2 控制流与数据流</h5><p>GFS中涉及写操作的流程大致可以分为两类，控制流与数据流（如下图所示）。</p>
+<p><img src="/images/image-20200701172343492.png" alt="GFS写操作的流程"></p>
+<ul>
+<li><p>数据流</p>
+<p>我们可以看到这里的数据流是一个串型流，而不是类似于广播式的并行流。这样做的考量是由于某一台机器的带宽是有限的，如果这里让<code>Client</code>端发送三分数据到三个分块服务器的话，对<code>Client</code>端带宽的占用会比较大。而使用图中这种串型传递的方式能够有效的分散带宽压力。</p>
+<ul>
+<li>从这一点，我们也可以发现整个GFS就是为大文件考虑的，在这种模式下，如果是数据量较小，那么会导致网络延迟增加。但如果数据量较大，那么网络延迟的增加就会很小，甚至还会降低网络延迟（如果接受不了到数据的一端把数据拆分成更小的粒度直接传递下去的话）。</li>
+<li>当数据到达分块服务器后，写操作不会马上进行，而是由分块服务器暂时缓存该数据，等待后续的控制流。</li>
+</ul>
+</li>
+<li><p>控制流</p>
+<p>图中的第一、二步还是和之前相同，即从Master获取元信息。第四步就是客户应用向主要分块服务器发送写操作请求，而剩下的控制流都由该主要分块服务器来引导。其中包括第五步，由主要分块服务器向所有的次要分块服务器发送写操作请求，如果成功，各个次要分块服务器会回复主要分块服务器（第六步），等所有次要分块服务器都回复后，并且自身也完成写操作后，该主要分块服务器就会向客户应用返回成功信息（第七步）。</p>
+<ul>
+<li>如果存在多个针对该文件块的并发写操作，由于这些写操作请求都会经过主要分块服务器，因此在主要分块服务器这边会完成顺序的统一，即它会给每个写操作请求编号，要求所有次要分块服务器按照一致的顺序来执行这些并发写操作。</li>
+<li>这里也可以看出append操作的原子性，即客户应用在发起append操作时并不会直接指定append的起始偏移量（相对于文件开始的位置），这一决定完全由主要分块服务器来做，即主要分块服务器会分配文件偏移量。这样就可以使得并发append操作有良好的原子性，并且不需要借助于锁的概念。</li>
+<li>简单的情况是当append操作的数据量能够装进该文件块。如果不能的话，GFS的选择是对当前文件块进行填充，然后告诉客户应用append到下一个文件块。</li>
+<li>并且值得注意的是，在客户应用侧，GFS采取的语义是至少执行一次。这就表明了，如果一次写操作由主要服务器认定为不成功，那么客户应用会再次请求该写操作，直到成功为止。而这种不成功，可能是某一个次要分块服务器的不成功，也可能是主要分块服务器的不成功。因此，例如一次append操作可能带来的结果是同样的数据被append了多于1次，也可能各个分块服务器的append次数不同等等。这个时候，备份之间的一致性就被打破了。后面会讨论GFS如何应对。</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-GFS的容错机制"><a href="#6-GFS的容错机制" class="headerlink" title="6. GFS的容错机制"></a>6. GFS的容错机制</h3><ul>
+<li>分块服务器一般有三个备份</li>
+<li>主服务器也会有多个备份</li>
+<li>一个分块服务器如果崩了，在下一次主服务器进行全局扫描任务的时候，会重新起一个分块服务器</li>
+<li>每次主服务器重新给主要分块服务器lease的时候会附加一个版本号，这个版本号也会传给同一个文件块的其他分块服务器</li>
+<li>主服务器通过检测版本号来检测是否某个分块服务器已经过时了，即崩溃过、重启过等等，此时该分块服务器就会被主服务器的垃圾回收机制给回收掉。即某个分块服务器一旦出现任何故障，哪怕最后复原了，也会被作为垃圾回收</li>
+</ul>
+<h3 id="一些重要的设计及问题"><a href="#一些重要的设计及问题" class="headerlink" title="一些重要的设计及问题"></a>一些重要的设计及问题</h3><ol>
+<li><p>主服务将所有的元信息都存储在内存（RAM）中，而非硬盘。这样做使得主服务对元信息的读取效率非常快。而这样做的一个潜在隐患即主服务器的内存空间有限，这样做真的好吗？</p>
+<p>由于一个文件对应的元信息相对于文件大小来说是很小的。GFS所选用的分块大小是64MB，而通常一个64MB的文件分块所对应的元信息只有不到64B。并且根据GFS的使用场景假设，大文件居多。因此，这样的元信息所带来的存储overhead是很小的，百万分之一。论文表明实践中内存容量并没有成为限制整个文件系统大小的一个因素。再退一步讲，增加内存容量所需要的成本与将元信息存储在内存中所带来的好处相比是微乎其微的。</p>
+<p>将元信息存储在内存中所带来的读取速度的提升，使得主服务器可以在后台周期性地进行全文件扫描。而这样的扫描是主服务器能够实现垃圾回收、数据块迁移、分块服务器复制等任务的重要前提。</p>
+</li>
+<li><p>分块大小为64MB，为什么选取这样一个较大的文件大小？</p>
+</li>
+<li><p>关于主要分块服务器的身份管理，不使用lease可以吗？</p>
+</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li>CMU <a href="http://www.andrew.cmu.edu/course/15-440/" target="_blank" rel="noopener">15-640</a></li>
+<li><a href="https://dl.acm.org/doi/pdf/10.1145/945445.945450" target="_blank" rel="noopener">原论文</a></li>
+</ul>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Shun Zhang</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://zhangshun97.github.io/2020/07/01/2020-07-01-google-file-system/">http://zhangshun97.github.io/2020/07/01/2020-07-01-google-file-system/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Shun Zhang</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">
+                                    <span class="chip bg-color">分布式系统</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                                    <span class="chip bg-color">文件系统</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'http://zhangshun97.github.io/2020/07/01/2020-07-01-google-file-system/';
+        this.page.identifier = '/2020/07/01/2020-07-01-google-file-system/';
+        this.page.title = '学习笔记 - Google分布式文件系统';
+    };
+    let disqus_shortname = 'shun-blog';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/07/01/2020-07-01-google-file-system/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="学习笔记 - Google分布式文件系统">
+                        
+                        <span class="card-title">学习笔记 - Google分布式文件系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要介绍初代谷歌分布式文件系统的整体框架、主要部件、对应读写操作的分布式协议以及容错机制。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">分布式系统</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">文件系统</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/06/30/2020-06-30-java-synchronized/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="学习笔记 - Java多线程——synchronized关键字">
+                        
+                        <span class="card-title">学习笔记 - Java多线程——synchronized关键字</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要整理synchronized关键字的不同语义，它的局限以及它的底层实现原理——Monitor机制。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                        <span class="chip bg-color">多线程</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('40')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: Never2Late<br />'
+            + '文章作者: Shun Zhang<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Shun Zhang</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/zhangshun97" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:shunzhang97@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
