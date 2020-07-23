@@ -1,0 +1,1020 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="基于CAS的并行红黑树结构, Never2Late">
+    <meta name="description" content="Shun的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>基于CAS的并行红黑树结构 | Never2Late</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Never2Late</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Never2Late</div>
+        <div class="logo-desc">
+            
+            Shun的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">基于CAS的并行红黑树结构</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                                <span class="chip bg-color">多线程</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/">
+                                <span class="chip bg-color">红黑树</span>
+                            </a>
+                        
+                            <a href="/tags/CAS/">
+                                <span class="chip bg-color">CAS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/" class="post-category">
+                                项目笔记
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-07-23
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2020-07-23
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    8 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>源代码：<a href="https://github.com/zhangshun97/Lock-free-Red-black-tree" target="_blank" rel="noopener">Github</a>，欢迎加Star，里面包括完整英文<a href="https://github.com/zhangshun97/Lock-free-Red-black-tree/blob/master/final_report.pdf" target="_blank" rel="noopener">report</a></p>
+<p>阅读要求：了解红黑树的基本性质及插入删除操作。</p>
+<p>这是我在CMU课程15-618（Parallel Computing）中的期末项目，由我和室友两人完成，室友主要负责插入操作，我主要负责删除操作，后面我们会看到，这两个操作的区别。我们基于C++中的CAS（<code>&lt;atomic&gt;.compare_exchange_weak</code>）实现了细粒度的线程安全红黑树结构，支持多线程插入和删除，并且在多核CPU上达到了线性加速比的效果（测试数据量为10w，线程数最多为16个）。</p>
+<p>整个的算法思想主要参考<a href="https://www.cs.umanitoba.ca/~hacamero/Research/RBTreesKim.pdf" target="_blank" rel="noopener">这篇论文</a>，我们可以说是修正并完善了该论文提出的算法流程，并且是全网第一个该论文的正确开源实现（Github上有两个能跑的实现，<a href="https://github.com/rutvij93/LockfreeRedBlackTree" target="_blank" rel="noopener">rutvij93</a> 和 <a href="https://github.com/josecamacho8/EE382C_TermProject/tree/master/RedBlackTree-LockFree" target="_blank" rel="noopener">josecamacho8</a>，前者是随着线程数增大反而变慢，而后者是仅仅在非常小的数据量级上进行实验甚至还会出现死锁情况）。</p>
+<p>之所以说我们是修正并完善了该论文提出的算法流程是因为原论文中虽然有着看似很详尽的伪代码，但其实在一些重要的函数内，作者却省略了关键的步骤，甚至伪代码之间还有冲突。原论文并没有实验数据就很好地说明了作者自己并没有一个正确实现的版本。</p>
+<h3 id="1-关于红黑树"><a href="#1-关于红黑树" class="headerlink" title="1. 关于红黑树"></a>1. 关于红黑树</h3><p>关于红黑树的概念以及（单线程）插入和删除的算法流程在《算法导论》中已经阐述得很详尽了，这里就不再赘述。不过一个有趣的问题是——为什么业界的很多自平衡树的实现（例如C++ STL的map和set，Java的Hashmap当节点链表长度大于8的时候，Linux内核等等）都是清一色的红黑树而不是选择平衡性更高的AVL树呢？</p>
+<p>起初，我也是想当然得认为，AVL树由于平衡性更严格，所以在插入和删除时所需要作出的调整就会相比于红黑树更多，所以性能会有所下降。一个最普遍的说法是</p>
+<blockquote>
+<p>AVL树和红黑树插入节点的时候均需要O(1)次旋转操作，而当删除一个节点时，AVL树最坏需要O(logN)次旋转而红黑树仍然只需要O(1)次旋转。</p>
+</blockquote>
+<p>但真的是这样吗？其实不然。</p>
+<p>【具体内容后续补充，先跳过】</p>
+<h3 id="2-符号及相关概念"><a href="#2-符号及相关概念" class="headerlink" title="2. 符号及相关概念"></a>2. 符号及相关概念</h3><h4 id="2-1-符号定义"><a href="#2-1-符号定义" class="headerlink" title="2.1 符号定义"></a>2.1 符号定义</h4><p>为方便后文的表述，有必要先来定义一些符号如下。</p>
+<ul>
+<li><code>x</code>，在插入/删除阶段的目标节点</li>
+<li><code>p</code>，<code>x</code>的父亲节点</li>
+<li><code>w</code>，<code>x</code>的兄弟节点</li>
+<li><code>gp</code>，<code>x</code>的祖父节点</li>
+<li><code>u</code>，<code>x</code>的叔叔节点，也即<code>p</code>的兄弟节点</li>
+<li><code>wlc</code>，<code>w</code>的左儿子节点</li>
+<li><code>wrc</code>，<code>w</code>的右儿子节点</li>
+<li><code>flag</code>，每个节点对象中的一个布尔变量，变量为真表示当前节点已经被一个线程标记</li>
+<li><code>marker</code>，每个节点对象中的一个整型变量，变量的值代表了线程ID</li>
+</ul>
+<h4 id="2-2-flag变量和CAS操作"><a href="#2-2-flag变量和CAS操作" class="headerlink" title="2.2 flag变量和CAS操作"></a>2.2 <code>flag</code>变量和CAS操作</h4><p>需要特殊说明的是，<code>flag</code>是一个C++的原子类即<code>atomic&lt;bool&gt;</code>。原子类有一个成员函数<code>std::atomic::compare_exchange_weak()</code>，这就是我们实现所用到的CAS操作。而<code>marker</code>不需要CAS操作，因为整个算法流程保证了一个线程会先获取节点的<code>flag</code>，才会设置<code>marker</code>。所以每个节点的<code>flag</code>就是线程同步的关键变量，可以理解为锁，只是在这里的锁并不满足请求与保持条件——即如果请求资源阻塞，则会主动释放已获取的资源，也就是Lock-free的思想。</p>
+<p><code>compare_exchange_weak</code>和<code>compare_exchange_strong</code>的区别会涉及到硬件层面。简单来说，即使需要比较的值是一样的，即满足交换条件，<code>compare_exchange_weak</code>仍有可能返回<code>false</code>，而<code>compare_exchange_strong</code>则保证会返回<code>true</code>。所以在实践中，如果本身就需要自旋的话，用<code>weak</code>的效率会高一些，而如果不需要自旋的话，<code>strong</code>可能是更好的选择。</p>
+<p>注：对于红黑树来说，不论是插入还是删除，最麻烦的部分都是插入或删除节点之后对树进行自下而上的调整以保持红黑树的性质。因此下文中说的插入和删除操作也主要指的是这些调整操作。</p>
+<h4 id="2-3-局部区域（local-area）"><a href="#2-3-局部区域（local-area）" class="headerlink" title="2.3 局部区域（local area）"></a>2.3 局部区域（local area）</h4><p>这个名词可能有些奇怪，但是暂时没有想到更合适的词语，就采用直译吧。这个概念是[1]中作者提出的，局部区域的定义是在插入和删除过程中的一次操作所需要涉及的一些关键节点的集合。</p>
+<p><img src="/images/image-20200722102727122.png" alt="image-20200722102727122"></p>
+<p>如上图所示，插入操作的局部区域包括<code>x, p, gp &amp; u</code>，删除操作的局部区域包括<code>x,p,w,wlc,wrc</code>。并且这个是有顺序意义的，即在一个线程进行插入或删除操作之前，它需要先占有这个局部区域内所有的节点，而这个占有是有顺序的，其顺序就是上面所列出的顺序，这也是符合直觉的。</p>
+<h3 id="3-算法实现"><a href="#3-算法实现" class="headerlink" title="3. 算法实现"></a>3. 算法实现</h3><h4 id="3-1-搜索"><a href="#3-1-搜索" class="headerlink" title="3.1 搜索"></a>3.1 搜索</h4><p>在讲插入和删除之前，不妨先来看看相对简单的查找是如何通过CAS操作实现线程安全的。</p>
+<p>这里用到的思想比较简单直接，即<code>hand-over-hand locking</code>。主要步骤为</p>
+<ol>
+<li>自旋获取根节点的<code>flag</code></li>
+<li>如果当前节点的<code>value</code>是查找的值，则查找结束，返回当前节点</li>
+<li>根据二分查找的顺序通过CAS获取下一个节点的<code>flag</code></li>
+<li>如果CAS失败则释放父节点的<code>flag</code>，然后重新从根节点开始</li>
+<li>如果获取成功且当前节点非叶子结点（红黑树中，所有的叶子结点均为<code>null</code>），则释放父节点的<code>flag</code></li>
+<li>重复步骤<code>2～6</code></li>
+</ol>
+<p>代码如下：</p>
+<pre class=" language-c++"><code class="language-c++">tree_node *par_find(tree_node *root, int value)
+{
+    bool expect;
+    tree_node *root_node;
+restart:
+    do {
+        root_node = root->left_child;
+        expect = false;
+    } while (!root_node->flag.compare_exchange_weak(expect, true));
+
+    tree_node *y = root_node;
+    tree_node *z = NULL;
+
+    while (!y->is_leaf)
+    {
+        z = y; // store old y
+        if (value == y->value)
+            return y; // find the node y
+        else if (value > y->value)
+            y = y->right_child;
+        else
+            y = y->left_child;
+
+        expect = false;
+        if (!y->flag.compare_exchange_weak(expect, true))
+        {
+            z->flag = false; // release held flag
+            usleep(100);
+            goto restart;
+        }
+        if (!y->is_leaf)
+            z->flag = false; // release old y's flag
+    }
+    return NULL; // node not found
+}</code></pre>
+<p>注意这里的<code>root</code>并不是实际意义上的根节点，只是为了方便处理边界问题而引入的一个节点，实际意义的根节点是<code>root-&gt;left_child</code>。</p>
+<h4 id="3-2-死锁避免"><a href="#3-2-死锁避免" class="headerlink" title="3.2 死锁避免"></a>3.2 死锁避免</h4><h5 id="3-2-1-为什么会死锁"><a href="#3-2-1-为什么会死锁" class="headerlink" title="3.2.1 为什么会死锁"></a>3.2.1 为什么会死锁</h5><p>在正式介绍插入和删除的具体流程之前，我想先谈谈死锁的问题。目前为止，我们只提及了局部区域和CAS获取<code>flag</code>的机制，但是仅仅依靠这两个机制并不能够让我们的算法避免死锁问题。因为在红黑树的删除过程中，<code>x</code>是可能会上移的，这就意味着此时我们需要以新的<code>x</code>为起点重新获取局部区域的所有<code>flag</code>，并且由于此时删除操作没有完成，更关键的是，在那个情形下，将红黑树的状态恢复到该删除操作之前已经不可能了。因此，一旦一个线程成功获取了最初的局部区域并开始进行删除操作，那么这个删除操作就不可撤回。特别的，在整个调整完成之前，<code>x</code>的<code>flag</code>是不可能释放的（<code>x</code>只可能上移）。所以，从这个意义上说，我们的算法是阻塞性的。而阻塞性质就会带来下面这个死锁情形：</p>
+<p><img src="/images/image-20200722235133081.png" alt="image-20200722235133081"></p>
+<p>这个情形中，黑色和红色线程均已经获取了<code>x, p, w</code>的<code>flag</code>，而当红色线程中的<code>x</code>需要上移时，红色线程所需的新的局部区域就变成了图中所示的五个节点，其中就包括了黑色线程已经占有的三个节点，最关键的是黑色线程的<code>x</code>节点，因为我们刚刚提到过，黑色线程不会释放<code>x</code>的<code>flag</code>。这就形成了典型的死锁。</p>
+<h5 id="3-2-2-如何避免死锁"><a href="#3-2-2-如何避免死锁" class="headerlink" title="3.2.2 如何避免死锁"></a>3.2.2 如何避免死锁</h5><p>上面这个案例并不是特例，在整个并行红黑树的算法流程中，发生死锁的风险均来自于两个线程离得过“近”，即两个线程的局部区域离得过“近”。因此，如何保证任意两个线程之间总是保持一个适当的距离是避免死锁的关键。那么剩下的问题就是——用什么机制保持距离？保持多“远”的距离？</p>
+<p>待更新</p>
+<h4 id="3-3-插入"><a href="#3-3-插入" class="headerlink" title="3.3 插入"></a>3.3 插入</h4><p>待更新</p>
+<h4 id="3-4-删除"><a href="#3-4-删除" class="headerlink" title="3.4 删除"></a>3.4 删除</h4><p>待更新</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1] Ma J. Lock-Free Insertions on Red-Black Trees[J]. Master’s thesis. The University of Manitoba, Canada (October 2003), 2003<br>[3] <a href="https://stackoverflow.com/questions/4944771/stdatomic-compare-exchange-weak-vs-compare-exchange-strong" target="_blank" rel="noopener">compare_exchange_weak vs. compare_exchange_strong</a><br>[4] <a href="https://en.cppreference.com/w/cpp/atomic/atomic/compare_exchange" target="_blank" rel="noopener">std::atomic<T>::compare_exchange_weak, std::atomic<T>::compare_exchange_strong</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Shun Zhang</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://zhangshun97.github.io/2020/07/23/lock-free-red-black-tree-cas/">http://zhangshun97.github.io/2020/07/23/lock-free-red-black-tree-cas/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Shun Zhang</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                                    <span class="chip bg-color">多线程</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/">
+                                    <span class="chip bg-color">红黑树</span>
+                                </a>
+                            
+                                <a href="/tags/CAS/">
+                                    <span class="chip bg-color">CAS</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'http://zhangshun97.github.io/2020/07/23/lock-free-red-black-tree-cas/';
+        this.page.identifier = '/2020/07/23/lock-free-red-black-tree-cas/';
+        this.page.title = '基于CAS的并行红黑树结构';
+    };
+    let disqus_shortname = 'shun-blog';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/07/23/lock-free-red-black-tree-cas/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="基于CAS的并行红黑树结构">
+                        
+                        <span class="card-title">基于CAS的并行红黑树结构</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要介绍我和室友在CMU 15-618课程中的期末项目，基于CAS实现的细粒度并行红黑树结构，多核CPU达到线性加速效果。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    项目笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                        <span class="chip bg-color">多线程</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/">
+                        <span class="chip bg-color">红黑树</span>
+                    </a>
+                    
+                    <a href="/tags/CAS/">
+                        <span class="chip bg-color">CAS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/07/01/google-file-system/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="学习笔记 - Google分布式文件系统">
+                        
+                        <span class="card-title">学习笔记 - Google分布式文件系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要介绍初代谷歌分布式文件系统的整体框架、主要部件、对应读写操作的分布式协议以及容错机制。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">分布式系统</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">文件系统</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('40')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: Never2Late<br />'
+            + '文章作者: Shun Zhang<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4, h5'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Shun Zhang</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/zhangshun97" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:shunzhang97@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1012 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="学习笔记 - HTTP，cookie和session, Never2Late">
+    <meta name="description" content="Shun的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>学习笔记 - HTTP，cookie和session | Never2Late</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Never2Late</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Never2Late</div>
+        <div class="logo-desc">
+            
+            Shun的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">学习笔记 - HTTP，cookie和session</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                <span class="chip bg-color">计算机网络</span>
+                            </a>
+                        
+                            <a href="/tags/HTTP/">
+                                <span class="chip bg-color">HTTP</span>
+                            </a>
+                        
+                            <a href="/tags/Cookie/">
+                                <span class="chip bg-color">Cookie</span>
+                            </a>
+                        
+                            <a href="/tags/Session/">
+                                <span class="chip bg-color">Session</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                学习笔记
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-06-29
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2020-07-16
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    8 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="1-从HTTP-0-9-到-HTTP-1-1"><a href="#1-从HTTP-0-9-到-HTTP-1-1" class="headerlink" title="1. 从HTTP/0.9 到 HTTP/1.1"></a>1. 从HTTP/0.9 到 HTTP/1.1</h3><p>HTTP协议作为一个应用层协议，应该是出现频率最高的一个协议了。几乎所有的网站都是HTTP协议。从最初的HTTP，再到后来的HTTPS，其内部的版本主要经历了0.9，1.0，1.1以及未来将会普及的2.0。关于HTTP协议更详细的内容具体可参见每个版本对应的RFC，例如当前普及率最高的HTTP/1.1版本的RFC编号是2616。所谓RFC，即Request For Comments，是一种类似于业内共识的文本。</p>
+<h4 id="1-1-HTTP-0-9"><a href="#1-1-HTTP-0-9" class="headerlink" title="1.1 HTTP/0.9"></a>1.1 HTTP/0.9</h4><ul>
+<li>仅支持方法：<code>GET</code></li>
+<li>仅支持超文本类型</li>
+<li>连接在得到回复后立即结束</li>
+<li>不支持HTTP header</li>
+<li>没有状态码（即400，408这些）</li>
+</ul>
+<h4 id="1-2-HTTP-1-0"><a href="#1-2-HTTP-1-0" class="headerlink" title="1.2 HTTP/1.0"></a>1.2 HTTP/1.0</h4><ul>
+<li>支持方法：<code>GET</code>, <code>HEAD</code>, <code>POST</code></li>
+<li><strong>支持更多类型文件</strong>，包括脚本和媒体文件等</li>
+<li>连接在得到回复后立即结束</li>
+<li><strong>支持HTTP header</strong>，包含一些请求/回复的信息，例如文本类型、上次修改时间等</li>
+<li><strong>支持状态码</strong></li>
+</ul>
+<p>至此，可以看到从0.9到1.0，有一个共同的问题没有得到解决，即每一次连接都会在得到回复后立即结束。这里我们默认双方使用的是TCP作为数据传输层协议，那么每一次连接都需要进行建立连接的三次握手阶段，这一阶段需要至少3倍的单向延迟时间（1.5个RTT），很明显当一个客户需要向服务器请求多个实体时这样频繁的建立连接是没有必要且十分耗时的。HTTP/1.1版本可以说主要是解决了这个问题。</p>
+<h4 id="1-3-HTTP-1-1"><a href="#1-3-HTTP-1-1" class="headerlink" title="1.3 HTTP/1.1"></a>1.3 HTTP/1.1</h4><ul>
+<li>支持方法：<code>GET</code>, <code>HEAD</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>TRACE</code>, <code>OPTIONS</code></li>
+<li><strong>支持持久化的连接（keep-alive）</strong></li>
+<li><strong>支持串联请求（pipelined requests）</strong></li>
+<li><strong>支持并发处理请求（I/O多路复用）</strong></li>
+</ul>
+<h3 id="2-从HTTP-1-1-到-HTTP-2-0"><a href="#2-从HTTP-1-1-到-HTTP-2-0" class="headerlink" title="2. 从HTTP/1.1 到 HTTP/2.0"></a>2. 从HTTP/1.1 到 HTTP/2.0</h3><p>虽然HTTP/1.1版本是目前流行的版本，但是它本身也有一些问题待解决。其中一个最主要的问题就是队头阻塞问题（Head-of-line Blocking）。这个问题指的是在持久化连接、尤其是串联请求的时候，如果前面有一个请求话费的时间较长（例如需要传输的文件较大），那么后面所有的请求都需要等待该请求完成后才能进行。</p>
+<p>一个简单的例子，假设你在浏览一篇博客，但是这篇博客里面有一张很大的图片，并且你的带宽并不是很高的情况下，我们假设传输这张图片需要2秒。而恰巧，你的浏览器对这篇博客的HTTP串联请求，将这个图片放在了一开始的地方，那么此时，你的浏览器将会处于空白状态。2秒之后这张图片显示出来了，随即这篇博客的正文也显示出来了。但是其实这张图片并不是你关注的重点，你只是想看博客的文字内容。所以在这种情况下，之前等待的2秒是非常影响用户体验的。</p>
+<p>HTTP/2.0 版本便主要针对这个问题，提出了一些解决方案。</p>
+<ul>
+<li>TCP连接多路复用<ul>
+<li>支持在同一个TCP连接内，采用多路复用（多个流，multiple streams）的方式，并发地传输串联请求所需要的文件，因此小文件不会被大文件阻塞</li>
+<li>主要是通过将各个文件切分成小粒度的message，然后进行编号，让客户端能够进行文件重组</li>
+</ul>
+</li>
+<li>流优先级管理（Stream Prioritization）<ul>
+<li>这个是建立在多路复用的基础上的，可以使得服务端能够进一步定制页面的加载顺序，以满足定制化的用户需求（例如有的场景需要优先加载图片，有的场景则需要优先加载文本，等等）</li>
+<li></li>
+</ul>
+</li>
+<li>服务器推送（server push）<ul>
+<li>在这之前，所有的HTTP请求都是以request for A –&gt; response with A的形式存在的，即客户端要什么，服务端就给什么。但是实际应用场景，每个网页都是由很多文件内容组成的，并且会有一些依赖关系（例如一个HTML文件里面有一个图片的link，那么大概率客户端会请求那个图片）</li>
+<li>服务器端便可以通过这种依赖关系来向客户端主动发送一些文件内容</li>
+</ul>
+</li>
+<li>请求头压缩<ul>
+<li>HTTP/1.1其实也有对message进行压缩，是对message body，即对实际传输的文件（CSS、js脚本等）进行压缩</li>
+<li>HTTP/2.0引入的是对请求头信息的压缩，采用的是（HPACK）</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-HTTP的扩展"><a href="#3-HTTP的扩展" class="headerlink" title="3. HTTP的扩展"></a>3. HTTP的扩展</h3><p>HTTP最初在设计上是去状态化（stateless）的，即HTTP服务器是不需要存储用户的相关状态信息的，去状态化最大的优势即能够大大降低服务器的载荷，一个连接在结束之后，与其相关的所有资源均可释放，使得服务器端的逻辑更简洁，这很符合HTTP协议的定位。但是自从1.1版本开始，随着持久化连接、串联请求以及并发请求的引入，更复杂的网站被建立起来，其中最主要的一个特征就是有着用户账号体系，需要登录的网站服务。因此，这些网站服务就需要跨请求传递信息的支持，例如网站服务需要辨认多个请求是否来自同一个账号（身份认证），或者网站服务需要对用户行为进行跟踪和分析，又或者网站服务需要为用户定制化内容等。Cookie和session的引入正是为了满足这些需求。</p>
+<h4 id="3-1-Cookie"><a href="#3-1-Cookie" class="headerlink" title="3.1 Cookie"></a>3.1 Cookie</h4><p>Cookie可以理解为是HTTP服务器主动在用户侧存储的一些非敏感信息，以键值对的形式储存。</p>
+<ul>
+<li>每一条cookie记录有着对应的作用域，当一个请求满足某条cookie的作用域时，浏览器就会自动将该cookie连同请求一起发送（作为请求头的一部分）。</li>
+<li>每一条cookie记录有对应的生存周期，如果指定生存周期，那么浏览器就会将cookie储存起来（硬盘），否则该cookie会在当前会话结束（浏览器窗口关闭）后被自动删除。</li>
+<li>不同的浏览器不会共享cookie，即便是同一个作用域下的cookie。</li>
+<li>一个网站服务只能读取属于它的作用域内的cookie，这一点是由浏览器来保证的。</li>
+</ul>
+<p>前面提到cookie的一个主要应用就是进行身份认证，也就通常的用户登录后的界面。而我们知道cookie是储存在客户端的，并且跨作用域访问限制是完全依靠浏览器实现的，因此，可以看出用cookie直接储存敏感信息是不可取的。那么既然如此，cookie又怎么能够实现身份认证这种需要敏感信息参与的任务呢？这就引出了session机制。可以说，session机制是建立在cookie机制之上的，并且session是需要在服务端存储相应信息的，这一点与cookie不同。</p>
+<h4 id="3-2-Session"><a href="#3-2-Session" class="headerlink" title="3.2 Session"></a>3.2 Session</h4><p>这里用一个具体的例子来阐述session是如何建立在cookie的基础上运作的。</p>
+<ol>
+<li>用户在浏览器上登录Facebook账号，采用的是POST方法，里面包含了用户名和密码（没有cookie参与）</li>
+<li>Facebook服务器收到该请求后会匹配用户数据库，如果匹配成功则用户成功登录。服务器会记录下该用户的登录状态，并分配一个唯一（对Facebook服务器端唯一）的编号（称为session id）给该用户账号</li>
+<li>在回复中服务器会加入<code>Set-Cookie</code>头让用户端的浏览器将该编号作为cookie内容存储下来，通常会设置生存周期和服务器端的自动登出时间一致</li>
+<li>这之后，如果用户访问Facebook的相关页面，浏览器就会自动将刚才包含session编号的cookie附加在请求头中</li>
+<li>Facebook再次收到该用户的请求后，会识别该session id，并与自身维护的已登录用户做匹配</li>
+<li>如果匹配成功，那么Facebook服务器就完成了对用户身份的认证，随即可以为该用户输出定制化的页面，例如好友列表、好友动态等</li>
+</ol>
+<p>注意：这里的身份认证其实有一些歧义，因为整个过程中，用户完成登录是不需要cookie或者session的介入的。而后续服务器端仅仅是识别该已登录用户的请求，所以称为身份识别可能会更精确一些。</p>
+<p>不过从这一点也可以窥探出cookie或者session机制会带来的问题——即如果我获得了别人的cookie，是否意味着我可以假装别人获取已登录界面？一般来说服务端还会检查用户IP地址等，但是诸如此类也可以被伪装或者绕过。因此这个问题的回答倾向于是肯定的。所以，绝大多数网站都仅仅会依据session的匹配结果给出一些非敏感的个性化信息，例如商品推荐等。但是一旦涉及到类似下单、结算等比较敏感的操作，服务网站会采取更严格的措施，例如重新登录等，而不仅仅依靠cookie或者session信息。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://medium.com/platform-engineer/evolution-of-http-69cfe6531ba0" target="_blank" rel="noopener">Evolution of HTTP</a></li>
+<li><a href="https://www.jianshu.com/p/831bd379d1b6" target="_blank" rel="noopener">session-理解HTTP</a></li>
+<li><a href="https://stackoverflow.com/questions/3804209/what-are-sessions-how-do-they-work" target="_blank" rel="noopener">what are sessions how do they work</a></li>
+<li><a href="https://blog.webf.zone/ultimate-guide-to-http-cookies-2aa3e083dbae" target="_blank" rel="noopener">Ultimate guide to http cookies</a></li>
+<li><a href="https://www.cloudflare.com/learning/performance/http2-vs-http1.1/" target="_blank" rel="noopener">Why is HTTP/2.0 faster than HTTP/1.1?</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/http-1-1-vs-http-2-what-s-the-difference" target="_blank" rel="noopener">HTTP/1.1 v.s. HTTP/2.0: What’s the difference?</a></li>
+</ul>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Shun Zhang</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://zhangshun97.github.io/2020/06/29/http-cookie-session/">http://zhangshun97.github.io/2020/06/29/http-cookie-session/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Shun Zhang</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                                    <span class="chip bg-color">计算机网络</span>
+                                </a>
+                            
+                                <a href="/tags/HTTP/">
+                                    <span class="chip bg-color">HTTP</span>
+                                </a>
+                            
+                                <a href="/tags/Cookie/">
+                                    <span class="chip bg-color">Cookie</span>
+                                </a>
+                            
+                                <a href="/tags/Session/">
+                                    <span class="chip bg-color">Session</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'http://zhangshun97.github.io/2020/06/29/http-cookie-session/';
+        this.page.identifier = '/2020/06/29/http-cookie-session/';
+        this.page.title = '学习笔记 - HTTP，cookie和session';
+    };
+    let disqus_shortname = 'shun-blog';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/06/30/java-synchronized/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="学习笔记 - Java多线程——synchronized关键字">
+                        
+                        <span class="card-title">学习笔记 - Java多线程——synchronized关键字</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要整理synchronized关键字的不同语义，它的局限以及它的底层实现原理——Monitor机制。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                        <span class="chip bg-color">多线程</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/06/27/b-tree/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="学习笔记 - 自底向上理解 B树/B+树">
+                        
+                        <span class="card-title">学习笔记 - 自底向上理解 B树/B+树</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要从机械硬盘的基本访问模式来介绍B树是如何被引入的。包括B树的前身多路查找树以及B树的后继B+树。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/B%E6%A0%91-B-%E6%A0%91/">
+                        <span class="chip bg-color">B树/B+树</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                        <span class="chip bg-color">数据库</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('40')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: Never2Late<br />'
+            + '文章作者: Shun Zhang<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4, h5'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Shun Zhang</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/zhangshun97" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:shunzhang97@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

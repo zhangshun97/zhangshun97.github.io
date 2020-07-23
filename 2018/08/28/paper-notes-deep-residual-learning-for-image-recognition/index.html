@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="学习心得 - TCP协议, Never2Late">
+    <meta name="keywords" content="论文笔记 - Deep Residual Learning for Image Recognition, Never2Late">
     <meta name="description" content="Shun的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>学习心得 - TCP协议 | Never2Late</title>
+    <title>论文笔记 - Deep Residual Learning for Image Recognition | Never2Late</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -67,17 +67,6 @@
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
       
       <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
     </a>
     
   </li>
@@ -154,17 +143,6 @@
         
         <li class="m-nav-item">
 	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
 		<a href="/archives" class="waves-effect waves-light">
 			
 			    <i class="fa-fw fas fa-archive"></i>
@@ -201,12 +179,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">学习心得 - TCP协议</h1>
+                    <h1 class="description center-align post-title">论文笔记 - Deep Residual Learning for Image Recognition</h1>
                 </div>
             </div>
         </div>
@@ -216,10 +194,105 @@
 
 
 
-<main class="container content">
+<main class="post-container content">
 
     
-    <!-- 文章内容详情 -->
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
 <div id="artDetail">
     <div class="card">
         <div class="card-content article-info">
@@ -228,12 +301,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/TCP%E5%8D%8F%E8%AE%AE/">
-                                <span class="chip bg-color">TCP协议</span>
+                            <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                                <span class="chip bg-color">神经网络</span>
                             </a>
                         
-                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                                <span class="chip bg-color">计算机网络</span>
+                            <a href="/tags/%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C/">
+                                <span class="chip bg-color">残差网络</span>
                             </a>
                         
                     </div>
@@ -244,8 +317,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="post-category">
-                                学习心得
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                学习笔记
                             </a>
                         
                     </div>
@@ -257,23 +330,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-12-26
+                    2018-08-28
                 </div>
                 
 
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2020-07-16
+                </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    678
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    2 分
                 </div>
                 
 
@@ -288,62 +366,40 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="0-写在前面"><a href="#0-写在前面" class="headerlink" title="0. 写在前面"></a>0. 写在前面</h2><p>这学期上的唯二两门CS课之一就是<a href="https://computer-networks.github.io/fa19/index.html" target="_blank" rel="noopener">15641 Computer Network</a>，在这之前对于网络的全部理解大概就是“重启路由器”了。在上课之前我一直认为网络这个东西相对独立，即大多数的工作都不需要计算机网络的相关知识。但是上完课之后我觉得这样的认识是肤浅的，网络中的很多概念和想法其实是很通用的，例如一个CDN就可以看成是一个巨大的NUMA machine；一个LAN也可以看成是一个放大版的CPU多核通信。</p>
-<h2 id="1-TCP概述"><a href="#1-TCP概述" class="headerlink" title="1. TCP概述"></a>1. TCP概述</h2><p>首先TCP，即<em>Transmission Control Protocol</em>，传输控制协议。顾名思义，它的主要任务就是进行数据的<strong>传输</strong>，<strong>控制</strong>也是为了<strong>更好</strong>的实现这个传输任务。</p>
-<p>以上加粗的三个词即构成了整个TCP的核心。即以什么形式传输？如何开始or结束传输？为什么需要控制？需要什么样的控制？什么叫做“更好”？</p>
-<h2 id="2-传输"><a href="#2-传输" class="headerlink" title="2. 传输"></a>2. 传输</h2><h3 id="2-1-以什么形式传输？"><a href="#2-1-以什么形式传输？" class="headerlink" title="2.1 以什么形式传输？"></a>2.1 以什么形式传输？</h3><p><strong>Packet</strong>，即（数据）包。相信大家如果接触过网络相关的知识对这个词一定不陌生，通常所说的抓包、丢包的“包”指的就是这个Packet。直接讲这个packet可能会有些突兀，首先要问的问题是，为什么要用这个packet？有没有一些别的方式？</p>
-<p>这里要稍微提一些历史，在网络发明以前，能够做到大范围通信的是什么？</p>
-<p>——有线电话。</p>
-<p>在一些怀旧影片中大家或许会注意到有这样一个职位：接线员（如下图）。以前打电话的时候通常都是先打到一个专接中心，在你告知接线员需要转接哪里后他就会帮你进行人为的接线操作。</p>
-<p><img src="/images/image-20191226155656485.png" alt="有线电话的接线机制"></p>
-<p>这当然是网络传输方式的一种选择，只是这种选择的弊端太明显，即成本高、不能规模化。考虑到如今网络的两大特点，用户群庞大以及流量分散，这种方式是注定不可行的。当然它也有它的好处，即带宽是稳定的。</p>
-<p>至此，大家就把目光投向了另一种大范围通信的系统——邮件系统。它的弊端是慢，以前靠人力、畜力，现在靠内燃机，还是慢。但是在互联网的设计中，这种弊端是全然不存在的，模拟信号在电缆中的传输速度接近光速。</p>
-<p>由此互联网便建立起了类似于邮件系统的数据传输模式——数据包收发（Packet switching）。它可以复用线路、分布式部署并且不需要人力进行管控，一旦部署完成即可自动收发数据包。其中最重要的一个特性就是对线路的复用（statistical multiplexing），这直接降低了分摊到每个用户的成本，同时提高了线路的效用。</p>
-<p>注：关于数据包的基本信息以及如何进行收发等可见IP相关知识。通常所说的数据包即指的是IP层可见的部分。</p>
-<h3 id="2-2-如何开始传输"><a href="#2-2-如何开始传输" class="headerlink" title="2.2 如何开始传输"></a>2.2 如何开始传输</h3><p>IP层的主要目的以及用途即尽可能的将数据包从A发送到B，而且对于每个数据包都是独立的，即IP层不会管数据包的内容尤其是先后顺序，而数据的有序性是两个客户端进行通信的很重要的一方面，这也正是TCP的主要特点之一（UDP则不保证有序性）。</p>
-<h4 id="2-2-1-为什么不直接传输数据"><a href="#2-2-1-为什么不直接传输数据" class="headerlink" title="2.2.1 为什么不直接传输数据"></a>2.2.1 为什么不直接传输数据</h4><p>所谓通信，即两个客户端开始互相有目的性得传输特定的数据。那么第一步，如何开始这个通信？通常这两个客户端中有一个为发起者（initiator），本次通信的第一个包即由他来发起。需要注意的是，这第一个包并不是真正的数据包，他更像是一个用来打招呼的包，我们称之为SYN（即指代Synchronize，同步），为什么需要有一个打招呼的包？最主要的原因是通信双方需要互相交换（同步）各自的数据序号（sequence number）。数据序号，顾名思义就是对每一个自己发出的数据（以字节为单位）编号。这个序号正是TCP用以保证数据的有序性的关键。</p>
-<p>注：为什么需要双方互相同步呢？在这里完全取决于应用层（Application layer）的选择，如果是类似HTTP的应用，则显然双方都有可能发送数据，但如果是明确只需要一方发送数据的，则改用UDP即可。</p>
-<h4 id="2-2-2-如何打招呼——三次握手"><a href="#2-2-2-如何打招呼——三次握手" class="headerlink" title="2.2.2 如何打招呼——三次握手"></a>2.2.2 如何打招呼——三次握手</h4><p>“三次握手”这个词似乎已经烂大街了，为什么是三次呢？我们先来讲，什么是一个完整的“招呼”。前面说到的，在这个过程中，双方需要互相交换（同步）各自的（初始）数据序号。最直接的想法就是：</p>
-<ol>
-<li><p>A发送自己的初始序号给B</p>
+                <p><a href="https://www.cv-foundation.org/openaccess/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html" target="_blank" rel="noopener">Original Paper</a></p>
+<h2 id="1-论文概述"><a href="#1-论文概述" class="headerlink" title="1. 论文概述"></a>1. 论文概述</h2><ul>
+<li>主要面对的问题<ul>
+<li>深度学习模型（神经网络）越深，越难训练</li>
+</ul>
 </li>
-<li><p>B做出回应表示收到</p>
+<li>解决方案<ul>
+<li>提出了残差网络（residual learning framework），将学习‘未知函数’的任务转化为学习与输入的残差函数</li>
+<li>实验表明残差网络更易训练，并且能够得益于更深的网络结构</li>
+</ul>
 </li>
-<li><p>B发送自己的初始序号给</p>
+</ul>
+<h2 id="2-相关工作"><a href="#2-相关工作" class="headerlink" title="2. 相关工作"></a>2. 相关工作</h2><ul>
+<li>残差表示（Residual Representations）<ul>
+<li>These methods suggest that a good reformulation or preconditioning can simplify the optimization.</li>
+</ul>
 </li>
-<li><p>A做出回应表示收到</p>
+<li>跨层链接（Shortcut Connections）<ul>
+<li>在残差结构（residual block）中，这种链接是单位链接（Identity shortcut connection），也就意味着没有参数；另一方面，如果将这部分链接的量置为0，该层网络结构也就与正常网络结构无异</li>
+</ul>
 </li>
-</ol>
-<p>这样是四次握手（一次握手可以理解为一个数据包），了解数据包的结构就不难发现，以上四个数据包中，2和3是可以合并的。于是就简化为了熟知的三次握手。在结束通信阶段，也有对应的握手，三次和四次均可（因为通信开始可以认为是一起开始的，但是结束则不一定）。</p>
-<h2 id="3-控制"><a href="#3-控制" class="headerlink" title="3. 控制"></a>3. 控制</h2><h3 id="3-1-为什么需要控制"><a href="#3-1-为什么需要控制" class="headerlink" title="3.1 为什么需要控制"></a>3.1 为什么需要控制</h3><p>在这里我们主要是站在数据发送方的视角考虑，当你在发送数据时，自然是希望越快越好，但是有以下两方面的考虑</p>
-<ol>
-<li>接收方的存储空间是有限的，特别的，为某一次传输准备的缓存空间更是有限的</li>
-<li>网络传输是受带宽限制的，特别的，路由器的缓存队列也是有限的</li>
-</ol>
-<p>考虑到第一点，如果你的发送速率过快，则会快速占满接收方的缓存空间，在之后你发送的包都会被丢弃，这显然是不可取的。</p>
-<p>考虑到第二点，如果你的发送速率过快，则会快速占满路由器的缓存队列（这里的路由器可以是你的包所经过的任意一个，这里可以仅关注离接收方最近的那个路由器），与此同时，其他的数据发送方发出的包就会被丢弃，这对于其他的接收/发送方是不公平的，并且如果大家都这样做，那就形成了恶性循环，也显然是不可取的。</p>
-<h3 id="3-2-需要什么样的控制"><a href="#3-2-需要什么样的控制" class="headerlink" title="3.2 需要什么样的控制"></a>3.2 需要什么样的控制</h3><ol>
-<li>针对上述的第一个考虑，TCP里面就引入了流量控制（flow control）的概念。具体的实现方式是让接收方在每次发送的ACK数据包内包含接收方剩余buffer大小的信息，这个数据包含在TCP头信息内。这样，发送方就可以根据这个信息，对自身的滑动窗口大小做一个上限的限制。</li>
-<li>针对上述第二个考虑，TCP引入了拥塞控制（congestion control）的概念。具体的实现方式是根据收到的ACK数据包来进行对滑动窗口大小的动态调整。这里的具体实现方式有多种，例如经典的Reno，Cubic以及谷歌推出的BBR。</li>
-</ol>
-<h3 id="4-TCP的状态机"><a href="#4-TCP的状态机" class="headerlink" title="4. TCP的状态机"></a>4. TCP的状态机</h3><p><img src="/images/image-20200629215506560.png" alt="TCP状态转移图"></p>
-<p><a href="https://book.systemsapproach.org/index.html#" target="_blank" rel="noopener">Computer Networks: A Systems Approach</a> 中的这张状态转移图是十分明了直观的。其中值得关注的一点是在结束阶段，先结束（先发FIN）的一方需要在对另一方的FIN作出ACK后等待一段时间（<code>TIME_WAIT</code>状态）。之所以这样做是因为，作为先结束的一方，最后收到另一方的FIN并作出ACK后，无法保证该ACK包被另一方顺利收到（例如丢包等）。而如果此时默认对方收到并结束连接的话，很有可能会在之后收到另一方重发的FIN包。这个FIN包可能会导致之后的由同一个端口开启的TCP连接提前结束。</p>
-<p>如果没有等待时间，一个可能的事件流如下</p>
-<ol>
-<li>A向B发送FIN</li>
-<li>B回复ACK到A</li>
-<li>A收到B的FIN</li>
-<li>A回复ACK给B，并直接变成结束状态</li>
-<li>B在timeout之后重发FIN</li>
-<li>B收到了之前A回复的ACK包，B变成结束状态</li>
-<li>B又在同一个端口与A建立了连接，经过握手阶段双方进入<code>Established</code>状态</li>
-<li>A收到之前一次B重发的FIN包，A回复ACK后进入<code>CLOSE_WAIT</code>状态</li>
-<li>在此次连接中A并无数据发送，发送FIN并进入<code>LAST_ACK</code>状态</li>
-<li>B对A的FIN回复ACK，A收到后就进入了<code>CLOSED</code>状态</li>
-</ol>
-<p>这样就因为没有预留等待时间而导致下次一的连接提前结束。这也正是IP层的魔力所在，即不确定性。数据包到达顺序不确定，到达时间不确定。因此，所有建立在IP层之上的协议都需要充分考虑到这一点，并根据自身需求作出相应的机制来避免与预期不相符的表现。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] 课程 <a href="https://computer-networks.github.io/fa19/index.html" target="_blank" rel="noopener">CMU 15-641 lecture</a></p>
-<p>[2] 书本 <a href="https://book.systemsapproach.org/index.html#" target="_blank" rel="noopener">Computer Networks: A Systems Approach</a></p>
+</ul>
+<h2 id="3-深度残差学习"><a href="#3-深度残差学习" class="headerlink" title="3. 深度残差学习"></a>3. 深度残差学习</h2><h3 id="3-1-残差学习"><a href="#3-1-残差学习" class="headerlink" title="3.1 残差学习"></a>3.1 残差学习</h3><p>我们记 $H(x)$ 为所需学习的函数，其由一些连续的网络层（可以不是整个网络）所代表；$x$ 记为这些层最开始的输入。如果假设这些网络层能够模拟复杂函数 $H(x)$，那么同样地，我们也可以假设其可以模拟残差函数 $H(x)-x$，记为 $F(x)$，于是原函数就变为 $F(x)+x$。</p>
+<ul>
+<li>动机<br><img src="/images/3EDE3DAB09BAACEA31F6EEE3FCA0E463.jpg" alt=""><br>如图（1）左所示，更深的神经网络的训练误差反而明显高于较浅的神经网络，这是非常反直觉的——即使更深的网络层都学到的是单位映射，也应该与较浅的网络结构表现相同，也不至于差差这么多——这就暗示了多层非线性神经网络可能在学习单位映射时很困难。</li>
+</ul>
+<p>现在有了残差网络这种重新的表示形式（reformulation），较深的层只需要将网络参数都置为0，即可学到单位映射（因为还有残差链接）。当然，在实际问题中很少有需要网络学习单位映射的情形，但是我们的残差网络可以帮助重新定义问题（即学习的目标函数改变了）。</p>
+<ul>
+<li>残差模块（residual block）<br>最典型的残差模块如下图所示：<br><img src="/images/C7A2C8F7F15C1AADF5E47CB98F983CAC.jpg" alt=""><br>输入和输出定义为：</li>
+</ul>
+<p>$$<br>  y = \mathcal{F}(x, {W_i}) + x<br>$$</p>
+<p>  这里的“+”即为对应元素之和（参考矩阵加法）；并且这里潜在要求 $y$ 和 $x$ 具有相同的纬度和尺寸，否则可以用一个线性映射来进一步调整残差的纬度和尺寸以符合输出：</p>
+<p>$$<br>  y = \mathcal{F}(x, {W_i}) + W_sx<br>$$</p>
+<p>  注：此处 $W_s$ 当然可以是一个矩阵作为残差网络的一组参数进行学习，但是实验表明单位映射已经表现得足够好并且又十分高效简洁。</p>
 
             </div>
             <hr/>
@@ -369,7 +425,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangshun97.github.io/2019/12/26/2019-12-26-tcp/">http://zhangshun97.github.io/2019/12/26/2019-12-26-tcp/</a>
+                    <a href="http://zhangshun97.github.io/2018/08/28/paper-notes-deep-residual-learning-for-image-recognition/">http://zhangshun97.github.io/2018/08/28/paper-notes-deep-residual-learning-for-image-recognition/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -407,12 +463,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/TCP%E5%8D%8F%E8%AE%AE/">
-                                    <span class="chip bg-color">TCP协议</span>
+                                <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                                    <span class="chip bg-color">神经网络</span>
                                 </a>
                             
-                                <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-                                    <span class="chip bg-color">计算机网络</span>
+                                <a href="/tags/%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C/">
+                                    <span class="chip bg-color">残差网络</span>
                                 </a>
                             
                         </div>
@@ -452,9 +508,9 @@
 
 <script type="text/javascript">
     disqus_config = function () {
-        this.page.url = 'http://zhangshun97.github.io/2019/12/26/2019-12-26-tcp/';
-        this.page.identifier = '/2019/12/26/2019-12-26-tcp/';
-        this.page.title = '学习心得 - TCP协议';
+        this.page.url = 'http://zhangshun97.github.io/2018/08/28/paper-notes-deep-residual-learning-for-image-recognition/';
+        this.page.identifier = '/2018/08/28/paper-notes-deep-residual-learning-for-image-recognition/';
+        this.page.title = '论文笔记 - Deep Residual Learning for Image Recognition';
     };
     let disqus_shortname = 'shun-blog';
 
@@ -484,60 +540,7 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/06/27/2020-06-27-b-tree/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="学习笔记 - 自底向上理解 B树/B+树">
-                        
-                        <span class="card-title">学习笔记 - 自底向上理解 B树/B+树</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            本文主要从机械硬盘的基本访问模式来介绍B树是如何被引入的。包括B树的前身多路查找树以及B树的后继B+树。
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-27
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    学习笔记
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/B%E6%A0%91-B-%E6%A0%91/">
-                        <span class="chip bg-color">B树/B+树</span>
-                    </a>
-                    
-                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
-                        <span class="chip bg-color">数据库</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2018/08/30/2018-08-30-paper-note-identity-mappings-in-deep-residual-networks/">
+                <a href="/2018/08/30/paper-note-identity-mappings-in-deep-residual-networks/">
                     <div class="card-image">
                         
                         
@@ -553,9 +556,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2018-08-30
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-08-30
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -577,6 +580,59 @@
                     
                     <a href="/tags/%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C/">
                         <span class="chip bg-color">残差网络</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/08/20/paper-notes-batch-normalization/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="论文笔记 - Batch Normalization">
+                        
+                        <span class="card-title">论文笔记 - Batch Normalization</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文是对于Batch Norm原论文的一份学习笔记(英文)。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-08-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Batch-Norm/">
+                        <span class="chip bg-color">Batch Norm</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">神经网络</span>
                     </a>
                     
                 </div>
@@ -652,6 +708,100 @@
 code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
 </style>
 
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4, h5'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4, h5').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
 
     
 
