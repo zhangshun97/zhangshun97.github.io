@@ -348,14 +348,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.9k
+                    4.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    15 分
                 </div>
                 
 
@@ -481,7 +481,7 @@ restart<span class="token operator">:</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
         y<span class="token operator">-</span><span class="token operator">></span>flag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">goto</span> restart<span class="token punctuation">;</span>
+        <span class="token keyword">goto</span> restart<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 获取x失败，从头来过</span>
     <span class="token punctuation">}</span>
 
     <span class="token operator">/</span><span class="token comment" spellcheck="true">/********* Step 3&amp;4. 获取x的局部区域以及相应的四个marker *********/</span><span class="token operator">/</span>
@@ -489,28 +489,26 @@ restart<span class="token operator">:</span>
     <span class="token punctuation">{</span>
         x<span class="token operator">-</span><span class="token operator">></span>flag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">!=</span> y<span class="token punctuation">)</span> y<span class="token operator">-</span><span class="token operator">></span>flag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">goto</span> restart<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 获取失败，从头来过</span>
+        <span class="token keyword">goto</span> restart<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 获取flag/marker失败，从头来过</span>
     <span class="token punctuation">}</span></code></pre>
-<h4 id="3-3-插入"><a href="#3-3-插入" class="headerlink" title="3.3 插入"></a>3.3 插入</h4><p>待更新</p>
-<h4 id="3-4-删除"><a href="#3-4-删除" class="headerlink" title="3.4 删除"></a>3.4 删除</h4><p>待更新</p>
+<p>其中值得一提的是<code>15~19</code>行部分的代码，之所以<code>par_find_successor(y)</code>可能会返回<code>NULL</code>是因为在获取后继节点的过程中，可能会失败的情形（例如遇到了另一个线程的局部区域）。并且在<code>par_find_successor(y)</code>函数内部失败重试的话可能会导致与另一个线程产生活锁（<code>livelock</code>），因为此时还未能保证这两个线程离得足够远。因此<code>par_find_successor(y)</code>失败的话，需要在上层逻辑进行失败重试，即``15～19`行。</p>
+<h4 id="3-3-插入"><a href="#3-3-插入" class="headerlink" title="3.3 插入"></a>3.3 插入</h4><p>【待更新】</p>
+<h4 id="3-4-删除"><a href="#3-4-删除" class="headerlink" title="3.4 删除"></a>3.4 删除</h4><h5 id="3-4-1-删除流程"><a href="#3-4-1-删除流程" class="headerlink" title="3.4.1 删除流程"></a>3.4.1 删除流程</h5><p>整个删除操作的流程图如下所示。其中白色部分是单线程红黑树原有的步骤（当然实现细节是有很大差异的），彩色的部分是为了线程安全而增加的步骤，并且<code>remove fixup</code>本身又是一个流程。</p>
+<p><img src="/images/WX20200727-103526.png" alt=""></p>
+<h5 id="3-4-2-简化的marker机制"><a href="#3-4-2-简化的marker机制" class="headerlink" title="3.4.2 简化的marker机制"></a>3.4.2 简化的<code>marker</code>机制</h5><p>在原论文中，作者对<code>marker</code>机制的限制是，在进行节点左旋和右旋操作过程中，<code>marker</code>需要按照新的父子关系进行变更，即如下图所示。在对蓝色节点进行右旋操作后，1号节点的父亲节点由2号节点变成了蓝色节点，根据原论文的规定，此时原先黑色线程在2号节点的<code>marker</code>需要转移到蓝色节点上。这就导致了双重<code>marker</code>的问题，即蓝色节点同时包括黑色线程和红色线程的<code>marker</code>。这就破坏了<code>marker</code>的互斥性。而原论文中也引入了另外两个机制来解决这个问题，这里就不再赘述了。</p>
+<p>重点是，我发现双重<code>marker</code>问题的根源是作者在节点左旋和右旋过程中对<code>marker</code>的处理，在具体实现中我发现完全可以将<code>marker</code>机制简化，从根本上就避免双重<code>marker</code>问题：</p>
+<ol>
+<li>在左旋和右旋过程中，如果发现所牵涉的节点含有某个线程的<code>marker</code>，则对其进行清除</li>
+<li>线程的目标节点<code>x</code>在每次需要上移前都需要再次获取四个父辈节点的<code>marker</code>以保证安全的距离</li>
+</ol>
+<p>其中第一点可以做到是因为在旋转过程中，该线程必然已经获取整个局部区域。再加上<code>marker</code>机制，保证了一个旋转操作涉及的节点不会横跨两个局部区域，因此是线程安全的。</p>
+<p>关于第二点，在原论文中，每次目标节点上升，只需要在原先的<code>marker</code>基础上，再多获取一个额外的<code>marker</code>即可。而在简化后的情况下，该线程则需要重新获取全部四个<code>marker</code>。因为在原论文的情况下，线程一旦获取了四个<code>marker</code>可以保证，在线程主动释放前，这四个<code>marker</code>会一直存在。但是在简化后的情况下，这四个<code>marker</code>可能会受到旋转影响被清除，因此每次目标节点上升时都需要重新获取四个<code>marker</code>。这一步可能相比原论文会略显复杂，但是简化后的<code>marker</code>机制所带来的收益也是很大的——从根本上避免双重<code>marker</code>问题，因此也不需要原论文提出的另外两个机制支持。</p>
+<p><img src="/images/WX20200727-105001.png" alt=""></p>
+<h5 id="3-4-3-活锁问题"><a href="#3-4-3-活锁问题" class="headerlink" title="3.4.3 活锁问题"></a>3.4.3 活锁问题</h5><p>在3.2.1中提到删除操作是阻塞的（获取局部区域后），因此一个典型的活锁场景如下所示。其中黑色线程的目标节点企图上升，而此时另外有一个绿色线程开始搜索，其目标节点在黑色线程局部区域的子树部分。因此由于阻塞性，我们可以知道在黑色线程完成删除操作之前，绿色线程是不可能搜索到它的目标节点（绿色）的。在这种情况下，绿色线程会一直进行尝试。而由于黑色线程需要上升，因此它需要向上获取四个<code>marker</code>。当此时黑色线程的<code>p</code>节点与<code>root</code>节点过近时，活锁就会发生。此时有一个好消息和一个坏消息。好消息是这样的活锁状态并不是稳定的，即黑色线程有机会先于绿色线程获取四个<code>marker</code>后进而产生实质性的工作。坏消息是，如果类似的绿色线程很多，比如又有一个蓝色线程如图所示，那么活锁的概率就会大大增加。</p>
+<p>在实际实现中，我发现只要让绿色线程、蓝色线程此类的线程在失败后，稍微进行一段时间的等待（约<code>100us</code>），就可以“解决”活锁问题。当然，这样的解决方法并不是像先前的死锁避免那样彻底解决该问题。但是，在后续测试中发现这样做的实际效果是足够好的。</p>
+<p><img src="/images/WX20200727-111131.png" alt=""></p>
+<h3 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h3><p>这里的篇幅有限，没能把实现中的所有方面都阐述到，如果你有兴趣，欢迎查看<a href="https://github.com/zhangshun97/Lock-free-Red-black-tree" target="_blank" rel="noopener">源代码</a>和阅读完整英文<a href="https://github.com/zhangshun97/Lock-free-Red-black-tree/blob/master/final_report.pdf" target="_blank" rel="noopener">report</a>。在英文报告中，我们也详细记录了我们的测试结果，其中还包括我们实现的另一个细粒度锁的红黑树插入版本，之所以没有实现细粒度锁的红黑树删除版本是因为本质上，如果不在失败后释放资源，是不能避免局部区域间的死锁问题的，因此从这个意义上来说，细粒度锁版本的删除操作是不可行的。又或者说，我们这里的删除操作也可以称为在失败后会放弃资源的细粒度锁版本。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1] Ma J. Lock-Free Insertions on Red-Black Trees[J]. Master’s thesis. The University of Manitoba, Canada October, 2003<br>[2] Kim J. H., Cameron H., Graham P. Lock-free red-black trees using cas[J]. Concurrency and Computation: Practice and experience, 2006: 1-40.<br>[3] <a href="https://stackoverflow.com/questions/4944771/stdatomic-compare-exchange-weak-vs-compare-exchange-strong" target="_blank" rel="noopener">compare_exchange_weak vs. compare_exchange_strong</a><br>[4] <a href="https://en.cppreference.com/w/cpp/atomic/atomic/compare_exchange" target="_blank" rel="noopener">std::atomic<T>::compare_exchange_weak, std::atomic<T>::compare_exchange_strong</a></p>
-<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">if</span> <span class="token punctuation">(</span>cond<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    vector<span class="token operator">&lt;</span><span class="token keyword">short</span><span class="token operator">></span> A<span class="token punctuation">;</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">else</span> <span class="token punctuation">{</span>
-    vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> A<span class="token punctuation">;</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">if</span> <span class="token punctuation">(</span>cond<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Class1 A<span class="token punctuation">;</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">else</span> <span class="token punctuation">{</span>
-    Class2 A<span class="token punctuation">;</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span></code></pre>
 
             </div>
             <hr/>
