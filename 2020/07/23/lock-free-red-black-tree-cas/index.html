@@ -341,21 +341,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-07-27
+                    2020-07-28
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.4k
+                    5.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    15 分
+                    20 分
                 </div>
                 
 
@@ -492,7 +492,36 @@ restart<span class="token operator">:</span>
         <span class="token keyword">goto</span> restart<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 获取flag/marker失败，从头来过</span>
     <span class="token punctuation">}</span></code></pre>
 <p>其中值得一提的是<code>15~19</code>行部分的代码，之所以<code>par_find_successor(y)</code>可能会返回<code>NULL</code>是因为在获取后继节点的过程中，可能会失败的情形（例如遇到了另一个线程的局部区域）。并且在<code>par_find_successor(y)</code>函数内部失败重试的话可能会导致与另一个线程产生活锁（<code>livelock</code>），因为此时还未能保证这两个线程离得足够远。因此<code>par_find_successor(y)</code>失败的话，需要在上层逻辑进行失败重试，即``15～19`行。</p>
-<h4 id="3-3-插入"><a href="#3-3-插入" class="headerlink" title="3.3 插入"></a>3.3 插入</h4><p>【待更新】</p>
+<h4 id="3-3-插入"><a href="#3-3-插入" class="headerlink" title="3.3 插入"></a>3.3 插入</h4><p>本节中3.3.1部分的图片来源于<a href="https://zhuanlan.zhihu.com/p/25358857" target="_blank" rel="noopener">红黑树（一）：插入</a>。</p>
+<p>由于红黑树中作为NULL指针的叶子节点要设为黑色，因此实现中为了方便，将叶子节点实体化为一种特殊类型的节点来让其包含颜色，而不是用NULL指针表示。</p>
+<h5 id="3-3-1-单线程下的插入处理"><a href="#3-3-1-单线程下的插入处理" class="headerlink" title="3.3.1 单线程下的插入处理"></a>3.3.1 单线程下的插入处理</h5><p>先来看看单线程下的插入操作是怎么处理的。首先构建一个新节点，将其设为红色，然后像对待二叉搜索树一样进行插入操作（搜索直到遇见叶子节点（NULL指针），把新节点放到NULL指针的位置），最后进行一系列旋转+染色操作让树重新遵守红黑树的规则。为什么要将新节点设为红色？Robert Lafore在Data Structures &amp; Algorithms in Java Second Edition给出了三点原因：</p>
+<ol>
+<li>红黑树要求任意路径的黑色节点数量相等，那么插入红色节点不会影响这条rule。</li>
+<li>当然，红黑树也不允许两个连续红色节点，但插入红色节点破坏rule的可能性更低。（插入黑色节点一定会破坏1中的rule，但插入红色节点有一半的概率不会破坏rule，因为只有在其父亲节点为红色时才会破坏rule）</li>
+<li>修复两个连续红色节点要比修复黑色节点数量不等更为容易。</li>
+</ol>
+<p>插入后有两种case不需要进行修复：</p>
+<ol>
+<li>Trivial Case#1：新节点是根节点。直接将其设为黑色即可满足条件。</li>
+<li>Trivial Case#2：新节点的父亲节点是黑色。这意味着新插入的节点没有打破红黑树规则，不需要修复。</li>
+</ol>
+<p>这意味着只有在新节点的父亲节点为红色时才需要进行修复。而这种情况又可以根据其叔叔节点与兄弟节点的颜色细分成三种case：</p>
+<ol>
+<li>Case#1：<strong>叔叔节点为红色</strong>，情形如下图(a)。我们可以通过将P和U设为黑色，G设为红色来让这四个节点符合要求，但G染红也可能导致红黑树规则被破坏。那么我们可以将G当作新插入的节点，对其递归地进行case的判定以及对应的修复。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/350676/1595960172210-cc4133d9-99aa-4b51-a1d8-d344969b82ad.png#align=left&display=inline&height=273&margin=%5Bobject%20Object%5D&originHeight=273&originWidth=720&size=0&status=done&style=none&width=720" alt=""></p>
+<ol start="2">
+<li>Case#2：<strong>叔叔节点为黑色，且N为P的左儿子</strong>，情形如下图(a)。那么将P右旋，并交换P与G的颜色就能恢复，最终如下图(c)。（这个操作可以看成先染色再旋转：为了避免连续红色节点，交换P与G的颜色；而染色导致G的左子树路径上黑色节点比右子树多一，因此将P右旋，把黑色的P从左子树独占变成两子树的共同节点。）</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/350676/1595960648345-a8b8ee66-558d-44bb-9fca-b935de3aaa42.png#align=left&display=inline&height=282&margin=%5Bobject%20Object%5D&originHeight=282&originWidth=720&size=0&status=done&style=none&width=720" alt=""></p>
+<ol start="3">
+<li>Case#3：<strong>叔叔节点为黑色，且N为P的右儿子</strong>，情形如下图(a)。此时要先将N左旋，再将N右旋，最后交换N和G的颜色，最终如下图(c)。（这个操作也可以看成先染色再旋转：首先为了避免连续红色节点将N染黑，然后P的右子树比左子树多一个黑色节点，因此将N左旋变为两者共同节点。而此时G的左子树自身平衡了，但比右子树多了一个黑色节点，所以将N右旋，提升成两子树的共同节点。最后发现右子树比左子树多了一个黑色节点，由于N-G-U是三个连续黑色节点，因此可以把G染红。）</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/350676/1595961927085-0dd568bf-0f96-429c-8634-a7dcb27e8bad.png#align=left&display=inline&height=285&margin=%5Bobject%20Object%5D&originHeight=285&originWidth=720&size=0&status=done&style=none&width=720" alt=""><br>注：以上图中N是P的左/右儿子会影响case的判定，但P是G的左还是右儿子不会影响。</p>
+<h5 id="3-3-2-多线程下额外的考虑"><a href="#3-3-2-多线程下额外的考虑" class="headerlink" title="3.3.2 多线程下额外的考虑"></a>3.3.2 多线程下额外的考虑</h5><p>多线程下首先要改动的就是搜索的过程。这里插入节点的部分用到了上面3.1所说的<code>Hand-over-hand</code>方法，最终找到叶子节点后用新节点替换。</p>
+<p>而修复的过程也需要获取<code>flag</code>来避免竞争。上面共总结出了5个Case，其中除了Case#1以外，都是只需要对图中这五个节点进行操作就可以了。所以基本思想就是插入后把这五个节点的锁都占上，等修复操作结束后再释放，而这五个节点也就是上面提到的局部区域（插入版）。</p>
+<p>麻烦之处在于Case#1：除了这五个节点外，它还有可能需要递归地操作更上面的节点。所以还要提供<code>move_inserter_up</code>的操作，获取图中<code>gp(G)</code>作为新插入节点所对应的<code>local area</code>，包括额外四个节点的<code>flag</code>。新的<code>local area</code>建立之后，才能对<code>gp(G)</code>进行下一步判定和操作。</p>
+<h5 id="3-3-3-插入流程图"><a href="#3-3-3-插入流程图" class="headerlink" title="3.3.3 插入流程图"></a>3.3.3 插入流程图</h5><p>插入的流程图如下所示。白色的部分对应着插入新节点的操作，橙色的部分是插入后修复红黑树结构的操作，对应于<code>insert fixup</code>。蓝色的部分则是与<code>local area</code>相关的操作，每个线程在开始修改结构前需要建立<code>local area</code>，获取相关节点的<code>flag</code>，并在修复完成后释放这些<code>flag</code>。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/350676/1595971275966-afbb8474-e417-444a-abc0-d47a3d7cc19a.png#align=left&display=inline&height=755&margin=%5Bobject%20Object%5D&name=image.png&originHeight=755&originWidth=660&size=75986&status=done&style=none&width=660" alt=""></p>
 <h4 id="3-4-删除"><a href="#3-4-删除" class="headerlink" title="3.4 删除"></a>3.4 删除</h4><h5 id="3-4-1-删除流程"><a href="#3-4-1-删除流程" class="headerlink" title="3.4.1 删除流程"></a>3.4.1 删除流程</h5><p>整个删除操作的流程图如下所示。其中白色部分是单线程红黑树原有的步骤（当然实现细节是有很大差异的），彩色的部分是为了线程安全而增加的步骤，并且<code>remove fixup</code>本身又是一个流程。</p>
 <p><img src="/images/WX20200727-103526.png" alt=""></p>
 <h5 id="3-4-2-简化的marker机制"><a href="#3-4-2-简化的marker机制" class="headerlink" title="3.4.2 简化的marker机制"></a>3.4.2 简化的<code>marker</code>机制</h5><p>在原论文中，作者对<code>marker</code>机制的限制是，在进行节点左旋和右旋操作过程中，<code>marker</code>需要按照新的父子关系进行变更，即如下图所示。在对蓝色节点进行右旋操作后，1号节点的父亲节点由2号节点变成了蓝色节点，根据原论文的规定，此时原先黑色线程在2号节点的<code>marker</code>需要转移到蓝色节点上。这就导致了双重<code>marker</code>的问题，即蓝色节点同时包括黑色线程和红色线程的<code>marker</code>。这就破坏了<code>marker</code>的互斥性。而原论文中也引入了另外两个机制来解决这个问题，这里就不再赘述了。</p>
