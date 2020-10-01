@@ -371,70 +371,70 @@
 <p>需要注意的是，局部类作为非静态嵌套类的一种，能够声明和定义的静态事物仅限于被<code>final</code>修饰的原生类型和字符串，并且被编译时就可以确定的常量初始化。类似于一般的静态变量和静态方法都不能够声明和定义。特别的，也不能在局部类中声明接口（interface），因为接口本质上也是静态的。</p>
 <h3 id="2-2-匿名类"><a href="#2-2-匿名类" class="headerlink" title="2.2 匿名类"></a>2.2 匿名类</h3><p>匿名类可以说是局部类的一个特例。相较于局部类，匿名类的作用完全是为了让你的代码更简洁。匿名类可以同时对一个局部类进行声明和实例化。当你只需要实例化这个局部类一次的时候，用匿名类可以使得你的代码变得更简洁，但是如果你需要实例化不止一次，那么匿名类反而会显得很冗余。</p>
 <p>匿名类的一个基本用法如下所示，其中<code>Typename</code>可以是类名也可以是接口名，分别表示该匿名类继承了一个类或实现了一个接口。</p>
-<pre class=" language-Java"><code class="language-Java">Typename t = new Typename() {
-    // like normal local class definition
-};</code></pre>
+<pre class=" language-java"><code class="language-java">Typename t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Typename</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// like normal local class definition</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
 <p>一个典型的使用场景是多线程编程时需要实现一个简单的Runnable接口。</p>
-<pre class=" language-Java"><code class="language-Java">Runnable r = new Runnable() {
-    @Override
-    void run { ... }
-}
-new Thread(r).start(); // 新线程</code></pre>
+<pre class=" language-java"><code class="language-java">Runnable r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">void</span> run <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 新线程</span></code></pre>
 <p>需要注意的是，匿名类和局部类一样在静态事物的声明和定义上受限。此外，匿名类不能定义任何构造器（constructor）。从语法上也可以看出，由于匿名类的定义和实例化是同时的，即使能够定义构造函数也无法进行调用。如果匿名类实现了一个接口，那么调用的是一个编译器给的默认空构造器，因为确实也没有任何需要运行时构造的变量。如果匿名类是继承了一个类，那么调用的就是相对应的父类构造器。看了下面这个例子就很清晰了。</p>
-<pre class=" language-Java"><code class="language-Java">public class AnonyClass {
-    public int id = 1;
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AnonyClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
-    AnonyClass() { }
+    <span class="token function">AnonyClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
 
-    AnonyClass(int id) {
-        this.id = id;
-    }
+    <span class="token function">AnonyClass</span><span class="token punctuation">(</span><span class="token keyword">int</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    public void print() {
-        System.out.println("father");
-    }
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"father"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    public static void main(String[] args) {
-        AnonyClass s1 = new AnonyClass() {
-            public void print() {
-                System.out.println("son1");
-            }
-        };
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        AnonyClass s1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnonyClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"son1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-        AnonyClass s2 = new AnonyClass(2) {
-            public void print() {
-                System.out.println("son2");
-            }
-        };
+        AnonyClass s2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnonyClass</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"son2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-        s1.print();
-        System.out.println(s1.id);
-        s2.print();
-        System.out.println(s2.id);
-    }
-}
+        s1<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s1<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s2<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s2<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-// stdout:
-// > son1
-// > 1
-// > son2
-// > 2</code></pre>
+<span class="token comment" spellcheck="true">// stdout:</span>
+<span class="token comment" spellcheck="true">// > son1</span>
+<span class="token comment" spellcheck="true">// > 1</span>
+<span class="token comment" spellcheck="true">// > son2</span>
+<span class="token comment" spellcheck="true">// > 2</span></code></pre>
 <p>最后需要注意的是，虽然匿名类可以创建新的变量（非静态或静态常量）以及非静态函数，但是由于我们在声明该实例时使用的是其父类或者接口的符号，因此不能通过该实例变量访问新增的变量或函数（否则会编译错误）。如果一定要访问，那么只能通过如下形式。</p>
-<pre class=" language-Java"><code class="language-Java">public class AnonyClass {
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AnonyClass</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        new AnonyClass() {
-            int id = 1;
-            public void print() {
-                System.out.println(id);
-            }
-        }.print();
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token class-name">AnonyClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        System.out.println(new AnonyClass() {
-            int id = 1;
-        }.id);
-    }
-}</code></pre>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">AnonyClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
 <p>但是这样就会显得很僵硬，所以个人感觉如果是新增的变量和函数，都应该只在匿名类内部访问。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><p><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html" target="_blank" rel="noopener">Oracle Java Document – Nested Classes</a></p>
